@@ -194,10 +194,12 @@ let scroll = () => {
     let el = sectionList[i];
     let compStyles = window.getComputedStyle(el);
     let h = el.clientHeight + parseFloat(compStyles.getPropertyValue("margin-bottom")) - window.innerHeight;
-    rateList[i * 2] = cropNumber((scrollTop - el.offsetTop) / h);
+
+    rateList[i * 2] = h != 0 ? cropNumber((scrollTop - el.offsetTop) / h) : 0;
     rateList[i * 2 + 1] = cropNumber((scrollTop - el.offsetTop - h) / window.innerHeight);
   }
 
+  console.log(rateList);
   let runFun = (rates, bools, fun) => {
     rates.forEach((val, index, array) => {
       if (index - 1 < 0 || array[index - 1] >= 1) {

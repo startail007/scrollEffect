@@ -331,5 +331,20 @@
         }
       }
     ]
+  },
+  {
+    "start": [
+      {
+        "selector": "#section05_wave",
+        "time": [0, 1],
+        "style": {
+          "opacity": { "val": [0, 1, 0] },
+          "backgroundPosition": {
+            "val": [100, 0],
+            "rule": "${0}% 0px"
+          }
+        }
+      }
+    ]
   }
 ]
