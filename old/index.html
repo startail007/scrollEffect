@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="section" id="section01">
+      <div class="sticky">
+        <div id="section01_bg"></div>
+        <div id="section01_text01">S&ensp;&ensp;&ensp;&ensp;</div>
+        <div id="section01_text02">&ensp;T&ensp;&ensp;&ensp;</div>
+        <div id="section01_text03">&ensp;&ensp;A&ensp;&ensp;</div>
+        <div id="section01_text04">&ensp;&ensp;&ensp;R&ensp;</div>
+        <div id="section01_text05">&ensp;&ensp;&ensp;&ensp;T</div>
+      </div>
+    </div>
+    <div class="section" id="section02">
+      <div class="sticky">
+        <div class="aaa"></div>
+      </div>
+    </div>
+    <div class="section" id="section03">
+      <div class="sticky">
+        <div class="aaa"></div>
+      </div>
+    </div>
+  </body>
+  <style>
+    body {
+      margin: 0;
+    }
+    .section {
+      position: relative;
+      display: block;
+    }
+    .sticky {
+      position: sticky;
+      display: block;
+      width: 100%;
+      height: 100vh;
+      background-color: rgb(194, 30, 223);
+      top: 0px;
+    }
+    .aaa {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 20vh;
+      background-color: rgb(91, 128, 108);
+    }
+    #section01 {
+      background-color: rgb(165, 42, 42);
+      height: 200vh;
+    }
+    #section01 .sticky {
+      background-color: rgb(65, 57, 66);
+    }
+    #section01 .aaa {
+      background-color: rgb(143, 30, 158);
+    }
+    #section02 {
+      background-color: rgb(0, 139, 139);
+      height: 300vh;
+    }
+    #section02 .sticky {
+      background-color: rgb(51, 54, 17);
+      margin-bottom: -100vh;
+    }
+    #section02 .aaa {
+      background-color: rgb(118, 128, 12);
+    }
+    #section03 {
+      background-color: rgb(0, 139, 7);
+      height: 200vh;
+    }
+    #section03 .sticky {
+      background-color: rgb(228, 21, 176);
+    }
+    #section03 .aaa {
+      background-color: rgb(236, 80, 18);
+    }
+    #section01_bg {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      /*background-color: hsl(0, 73%, 47%);*/
+    }
+    #section01_text01,
+    #section01_text02,
+    #section01_text03,
+    #section01_text04,
+    #section01_text05 {
+      position: absolute;
+      display: block;
+      color: #fff;
+      font-size: 8rem;
+      left: 50%;
+      top: 50%;
+      /*transform: translate(-50%, -50%) scale(0);*/
+      letter-spacing: 0.8rem;
+    }
+  </style>
+  <script>
+    function rangeValue(val, min, max) {
+      return min + val * (max - min);
+    }
+    function mapVal(val, min, max) {
+      return (val - min) / (max - min);
+    }
+    function cropVal(val) {
+      if (val < 0) {
+        return 0;
+      }
+      if (val > 1) {
+        return 1;
+      }
+      return val;
+    }
+    function runStyle(el, val, fun) {
+      fun(el.style, val);
+    }
+    window.addEventListener("load", () => {
+      let sectionList = document.getElementsByClassName("section");
+      let scroll = () => {
+        let scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
+        for (let i = 0; i < sectionList.length; i++) {
+          let el = sectionList[i];
+          let rate = (scrollTop - el.offsetTop) / (el.clientHeight - window.innerHeight);
+          rate = Math.min(Math.max(rate, 0), 1);
+          if (i == 0) {
+            let section01_bg = document.getElementById("section01_bg");
+            runStyle(section01_bg, cropVal(mapVal(rate, 0, 0.7)), (style, val) => {
+              style.backgroundColor = `hsl(0, ${rangeValue(val, 73, 20)}%, ${rangeValue(val, 47, 10)}%)`;
+            });
+            let section01_text_fun = (style, val) => {
+              style.transform = `translate(-50%, -50%) scale(${rangeValue(val, 0.2, 1)})`;
+              style.opacity = val;
+            };
+            let section01_text01 = document.getElementById("section01_text01");
+            runStyle(section01_text01, cropVal(mapVal(rate, 0, 0.3)), section01_text_fun);
+            let section01_text02 = document.getElementById("section01_text02");
+            runStyle(section01_text02, cropVal(mapVal(rate, 0.1, 0.4)), section01_text_fun);
+            let section01_text03 = document.getElementById("section01_text03");
+            runStyle(section01_text03, cropVal(mapVal(rate, 0.2, 0.5)), section01_text_fun);
+            let section01_text04 = document.getElementById("section01_text04");
+            runStyle(section01_text04, cropVal(mapVal(rate, 0.3, 0.6)), section01_text_fun);
+            let section01_text05 = document.getElementById("section01_text05");
+            runStyle(section01_text05, cropVal(mapVal(rate, 0.4, 0.7)), section01_text_fun);
+          }
+        }
+      };
+      window.addEventListener("scroll", scroll);
+      scroll();
+    });
+  </script>
+</html>
