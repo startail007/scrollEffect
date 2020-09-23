@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  min-width: 1024px;
+  min-width: 768px;
 }
 .nav_sticky {
   position: sticky;
@@ -130,8 +130,8 @@ body {
   fill: none;
   stroke: #ccc;
   stroke-width: 8px;
-  stroke-linecap: square;
-  stroke-linejoin: square;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   /* stroke: url(#stroke); */
   /* filter: url(#f3); */
 }
@@ -157,4 +157,12 @@ body {
   background-size: 100px 100%;
   background-repeat: no-repeat;
   /* -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%); */
+}
+
+#abc {
+  position: absolute;
+  display: block;
+  width: 200px;
+  height: 200px;
+  background-color: darkviolet;
 }

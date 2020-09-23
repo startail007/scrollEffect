@@ -4,7 +4,7 @@
     "process": [
       {
         "selector": "#section01_bg",
-        "time": [0, 0.3],
+        "time": { "start": 0, "duration": 0.3 },
         "style": {
           "backgroundColor": {
             "val": [
@@ -17,7 +17,7 @@
       },
       {
         "selector": "#section01_text01",
-        "time": [0, 0.3],
+        "time": { "start": 0, "duration": 0.3 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -31,7 +31,7 @@
       },
       {
         "selector": "#section01_text02",
-        "time": [0.1, 0.3],
+        "time": { "start": 0.1, "duration": 0.3 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -45,7 +45,7 @@
       },
       {
         "selector": "#section01_text03",
-        "time": [0.2, 0.3],
+        "time": { "start": 0.2, "duration": 0.3 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -59,7 +59,7 @@
       },
       {
         "selector": "#section01_text04",
-        "time": [0.3, 0.3],
+        "time": { "start": 0.3, "duration": 0.3 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -73,7 +73,7 @@
       },
       {
         "selector": "#section01_text05",
-        "time": [0.4, 0.3],
+        "time": { "start": 0.4, "duration": 0.3 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -92,7 +92,7 @@
     "start": [
       {
         "selector": "#section02_g01",
-        "time": [0.5, 0.5],
+        "time": { "start": 0, "duration": 1 },
         "style": {
           "opacity": { "val": [0, 1] },
           "transform": {
@@ -108,7 +108,7 @@
     "process": [
       {
         "selector": "#section02_g01_text01",
-        "time": [0.1, 0.2],
+        "time": { "start": 0.1, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -122,7 +122,7 @@
       },
       {
         "selector": "#section02_g01_text02",
-        "time": [0.2, 0.2],
+        "time": { "start": 0.2, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -136,7 +136,7 @@
       },
       {
         "selector": "#section02_g01_text03",
-        "time": [0.3, 0.2],
+        "time": { "start": 0.3, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -150,7 +150,7 @@
       },
       {
         "selector": "#section02_g01_text04",
-        "time": [0.4, 0.2],
+        "time": { "start": 0.4, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -164,7 +164,7 @@
       },
       {
         "selector": "#section02_g01_text05",
-        "time": [0.5, 0.2],
+        "time": { "start": 0.5, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -178,7 +178,7 @@
       },
       {
         "selector": "#section02_g01_text06",
-        "time": [0.6, 0.2],
+        "time": { "start": 0.6, "duration": 0.2 },
         "style": {
           "transform": {
             "val": [0, 360],
@@ -194,7 +194,7 @@
     "end": [
       {
         "selector": "#section02_g01",
-        "time": [0, 1],
+        "time": { "start": 0, "duration": 1 },
         "style": {
           "opacity": { "val": [1, 0] },
           "transform": {
@@ -212,7 +212,7 @@
     "process": [
       {
         "selector": "#section03_bg",
-        "time": [0, 1],
+        "time": { "start": 0, "duration": 1 },
         "style": {
           "backgroundPosition": {
             "val": [
@@ -231,7 +231,7 @@
     "start": [
       {
         "selector": "#section04_bg",
-        "time": [0, 1],
+        "time": { "start": 0, "duration": 1 },
         "style": {
           "backgroundColor": {
             "val": [
@@ -244,7 +244,7 @@
       },
       {
         "selector": "#section04_path01",
-        "time": [0, 0],
+        "time": { "start": 0, "duration": 0 },
         "style": {
           "stroke-dasharray": {
             "val": [385.51995849609375]
@@ -256,7 +256,7 @@
       },
       {
         "selector": "#section04_path02",
-        "time": [0, 0],
+        "time": { "start": 0, "duration": 0 },
         "style": {
           "stroke-dasharray": {
             "val": [364.53521728515625]
@@ -268,7 +268,7 @@
       },
       {
         "selector": "#section04_path03",
-        "time": [0, 1],
+        "time": { "start": 0, "duration": 0 },
         "style": {
           "stroke-dasharray": {
             "val": [402.5455627441406]
@@ -282,7 +282,7 @@
     "process": [
       {
         "selector": "#section04_bg",
-        "time": [0.2, 0.6],
+        "time": { "start": 0.2, "duration": 0.6 },
         "style": {
           "backgroundColor": {
             "val": [
@@ -296,7 +296,7 @@
       },
       {
         "selector": "#section04_path01",
-        "time": [0.2, 0.2],
+        "time": { "start": 0.2, "duration": 0.2 },
         "style": {
           "stroke-dasharray": {
             "val": [385.51995849609375]
@@ -308,7 +308,7 @@
       },
       {
         "selector": "#section04_path02",
-        "time": [0.4, 0.2],
+        "time": { "start": 0.4, "duration": 0.2 },
         "style": {
           "stroke-dasharray": {
             "val": [364.53521728515625]
@@ -320,7 +320,7 @@
       },
       {
         "selector": "#section04_path03",
-        "time": [0.6, 0.2],
+        "time": { "start": 0.6, "duration": 0.2 },
         "style": {
           "stroke-dasharray": {
             "val": [402.5455627441406]
@@ -336,7 +336,7 @@
     "start": [
       {
         "selector": "#section05_wave",
-        "time": [0, 1],
+        "time": { "start": 0, "duration": 1 },
         "style": {
           "opacity": { "val": [0, 1, 0] },
           "backgroundPosition": {
