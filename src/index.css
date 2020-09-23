@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap");
+
 body {
   margin: 0;
   min-width: 768px;
@@ -29,9 +31,10 @@ body {
 }
 #section01 {
   height: 200vh;
+  font-family: "Noto Sans TC";
 }
 #section02 {
-  height: 300vh;
+  height: 400vh;
   margin-bottom: -100vh;
 }
 #section03 {
@@ -61,15 +64,11 @@ body {
   left: 0;
   background-color: darkred;
 }
-#section01_text01,
-#section01_text02,
-#section01_text03,
-#section01_text04,
-#section01_text05 {
+.section01_text01 {
   position: absolute;
   display: block;
   color: #fff;
-  font-size: 8rem;
+  font-size: 4rem;
   left: 50%;
   top: 50%;
   /*transform: translate(-50%, -50%) scale(0);*/
@@ -80,20 +79,24 @@ body {
   position: absolute;
   display: block;
   color: #fff;
-  font-size: 8rem;
+  font-size: 4rem;
   left: 50%;
   top: 50%;
   /*transform: translate(-50%, -50%) scale(0);*/
   white-space: nowrap;
+  /*filter: url(#f1);*/
 }
-#section02_g01_text01,
-#section02_g01_text02,
-#section02_g01_text03,
-#section02_g01_text04,
-#section02_g01_text05,
-#section02_g01_text06 {
+.section02_g01_text01 {
   display: inline-block;
   /*text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);*/
+}
+#section02_line01 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: 0px;
+  background-color: #fff;
 }
 #section02_bg {
   position: absolute;
@@ -116,6 +119,7 @@ body {
   background-image: url("./section03_bg.png");
   background-position: center center;
   background-size: auto 100px;
+  /*filter: url(#f1);*/
 }
 #section04_bg {
   position: absolute;
