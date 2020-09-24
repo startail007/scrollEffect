@@ -64,15 +64,29 @@ body {
   left: 0;
   background-color: darkred;
 }
-.section01_text01 {
+.section01_g01 {
   position: absolute;
   display: block;
   color: #fff;
   font-size: 4rem;
+  /*width: 300px;
+  height: 100px;*/
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
+}
+.section01_g01_text01 {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  /*left: 0px;
+  top: 0px;*/
+  /*left: 50%;
+  top: 50%;*/
+  font-size: 4rem;
   /*transform: translate(-50%, -50%) scale(0);*/
-  letter-spacing: 1.5rem;
+  /*letter-spacing: 1rem;*/
+  white-space: nowrap;
 }
 
 #section02_g01 {
@@ -161,12 +175,4 @@ body {
   background-size: 100px 100%;
   background-repeat: no-repeat;
   /* -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%); */
-}
-
-#abc {
-  position: absolute;
-  display: block;
-  width: 200px;
-  height: 200px;
-  background-color: darkviolet;
 }
