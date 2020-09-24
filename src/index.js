@@ -185,11 +185,12 @@ const listData = list.map((item) => {
   let temp = {};
   for (let key in item) {
     temp[key] = [];
-    item[key].forEach((obj) => {
-      const elList = document.body.querySelectorAll(obj.selector);
+    for (let selector in item[key]) {
+      const obj = item[key][selector];
+      const elList = document.body.querySelectorAll(selector);
       [...elList].forEach((el, index, array) => {
-        let start = obj.style["time"].start;
-        let duration = obj.style["time"].duration;
+        let start = obj["time"].start;
+        let duration = obj["time"].duration;
         const elRate = index / (array.length - 1);
         if (typeof start == "string") {
           start = splitEl(start, elRate, (val) => {
@@ -206,10 +207,10 @@ const listData = list.map((item) => {
           });
         }
 
-        for (let styleKey in obj.style) {
+        for (let styleKey in obj) {
           if (styleKey != "time") {
             let unit;
-            let vals = obj.style[styleKey].val;
+            let vals = obj[styleKey].val;
             if (typeof vals == "string") {
               const data = vals.split(/\_/g);
               vals = splitTime(data[0], (val) => {
@@ -232,19 +233,19 @@ const listData = list.map((item) => {
               duration: duration,
               num: {
                 val: vals,
-                calc: obj.style[styleKey].calc,
-                rule: obj.style[styleKey].rule,
+                calc: obj[styleKey].calc,
+                rule: obj[styleKey].rule,
                 unit: unit,
               },
             });
           }
         }
       });
-    });
+    }
   }
   return temp;
 }); //資料轉換
-console.log(listData);
+//console.log(listData);
 //0.1~0.3 時間接續漸變 0~1秒變化對應0.1~0.3
 //0.1|0.3 間隔亂數
 //10,10 分組
