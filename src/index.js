@@ -67,13 +67,11 @@ const lagrangeInterpolation = (data, x) => {
   }
 }; //內插法
 
-const easeStep = (data, rate) => {
-  const vals = data.val;
-  const calc = data.calc;
-  const rule = data.rule;
-  const unit = data.unit ? data.unit : "";
+const easeStep = (vals, calc, rule, unit = "", rate) => {
   if (typeof vals == "object") {
-    if (typeof vals[0] == "number") {
+    if (typeof vals[0] == "string") {
+      return vals;
+    } else if (typeof vals[0] == "number") {
       let val = lagrangeInterpolation(vals, rate);
       if (calc) {
         val = eval(calc.replace(/\$\{\d\}/g, val));
@@ -88,7 +86,11 @@ const easeStep = (data, rate) => {
             for (let j = 0; j < vals.length; j++) {
               temp.push(vals[j][i]);
             }
-            valList[i] = lagrangeInterpolation(temp, rate);
+            if (temp.length > 1) {
+              valList[i] = lagrangeInterpolation(temp, rate);
+            } else if (temp.length >= 0) {
+              valList[i] = temp[0];
+            }
           }
 
           const valList0 = [];
@@ -111,61 +113,47 @@ const easeStep = (data, rate) => {
     }
   }
 };
-const sectionStyleEaseStep = (data, rate) => {
-  if (data) {
-    data.forEach((obj) => {
-      let rate0 = cropNumber(obj.duration == 0 ? 0 : mapVal(rate, obj.start, obj.start + obj.duration));
-      obj.el.style[obj.style] = easeStep(obj.num, rate0);
-    });
-  }
+const styleEaseStep = (el, styleList, rate, rangeBool) => {
+  styleList.forEach((item) => {
+    el.style[item.name] = easeStep(
+      item.falseVal && !rangeBool ? item.falseVal : item.val,
+      item.calc,
+      item.rule,
+      item.unit,
+      rate
+    );
+  });
 };
-const getSectionScrollData = (sectionList, scrollTop) => {
-  for (let i = 0; i < sectionList.length; i++) {
-    const el = sectionList[i];
-    const compStyles = window.getComputedStyle(el);
-    const h = el.clientHeight + parseFloat(compStyles.getPropertyValue("margin-bottom")) - window.innerHeight;
-    let rate = 0;
 
-    rate = h != 0 ? cropNumber((scrollTop - el.offsetTop) / h) : 0;
-    if (rate >= 0 && rate < 1) {
-      return { type: "run", index: i, rate: rate };
-    }
-
-    rate = cropNumber((scrollTop - el.offsetTop - h) / window.innerHeight);
-    if (rate >= 0 && rate < 1) {
-      return { type: "ease", index: i, rate: rate };
-    }
-  }
-};
 const splitRandom = (val, changeNum) => {
   if (/\|/g.test(val)) {
     const nums = val.split(/\|/g).map((val_0) => {
-      return changeNum ? changeNum(val_0) : val_0;
+      return changeNum ? changeNum(val_0, true) : val_0;
     });
     return lagrangeInterpolation(nums, Math.random());
   } else {
-    return changeNum ? changeNum(val) : val;
+    return changeNum ? changeNum(val, false) : val;
   }
 };
 
 const splitEl = (val, rate, changeNum) => {
   if (/\-\>/g.test(val)) {
     const nums = val.split(/\-\>/g).map((val_0) => {
-      return changeNum ? changeNum(val_0) : val_0;
+      return changeNum ? changeNum(val_0, true) : val_0;
     });
     return lagrangeInterpolation(nums, rate);
   } else {
-    return changeNum ? changeNum(val) : val;
+    return changeNum ? changeNum(val, false) : val;
   }
 };
 
 const splitGroup = (val, changeNum) => {
   if (/\,/g.test(val)) {
     return val.split(/\,/g).map((val_0) => {
-      return changeNum ? changeNum(val_0) : val_0;
+      return changeNum ? changeNum(val_0, true) : val_0;
     });
   } else {
-    return changeNum ? changeNum(val) : val;
+    return changeNum ? changeNum(val, false) : val;
   }
 };
 const splitTime = (val, changeNum) => {
@@ -173,96 +161,152 @@ const splitTime = (val, changeNum) => {
     return changeNum ? changeNum(val_0) : val_0;
   });
 };
+// const splitSwitch = (val, changeNum) => {
+//   if (/\&/g.test(val)) {
+//     return val.split(/\&/g).map((val_0) => {
+//       return changeNum ? changeNum(val_0, true) : val_0;
+//     });
+//   } else {
+//     return changeNum ? changeNum(val, false) : val;
+//   }
+// };
+const splitStyle = (val, rate) => {
+  return splitTime(val, (val) => {
+    return splitGroup(val, (val) => {
+      return splitEl(val, rate, (val) => {
+        return splitRandom(val, (val) => {
+          return numberConversion(val);
+        });
+      });
+    });
+  });
+};
+const numberConversion = (val, changeNum) => {
+  if (/^\-?\d+(.\d*)?$/g.test(val)) {
+    return changeNum ? changeNum(parseFloat(val), true) : parseFloat(val);
+  } else {
+    return changeNum ? changeNum(val, false) : val;
+  }
+};
 
-const sectionList = document.getElementsByClassName("section");
+const timeDecomposition = (time, rate) => {
+  if (time) {
+    let time01 = 0;
+    let time02 = 0;
+    let duration = false;
+    if (typeof time == "string") {
+      if (/\_/g.test(time)) {
+        const timeData = time.split(/\_/g);
+        time01 = timeData[0];
+        time02 = timeData[1];
+        duration = true;
+      } else if (/\~/g.test(time)) {
+        const timeData = time.split(/\~/g);
+        time01 = timeData[0];
+        time02 = timeData[1];
+        duration = false;
+      }
+    }
+    if (typeof time01 == "string") {
+      time01 = splitEl(time01, rate, (val) => {
+        return splitRandom(val, (val) => {
+          return parseFloat(val);
+        });
+      });
+    }
+    if (typeof time02 == "string") {
+      time02 = splitEl(time02, rate, (val) => {
+        return splitRandom(val, (val) => {
+          return parseFloat(val);
+        });
+      });
+    }
+    return { start: time01, end: duration ? time01 + time02 : time02 };
+  }
+  return time;
+};
 
 import list from "./data";
 
 let cRate = 0;
-let cType = "run";
-let cIndex = 0;
-const listData = list.map((item) => {
-  let temp = {};
-  for (let key in item) {
-    temp[key] = [];
-    for (let selector in item[key]) {
-      const obj = item[key][selector];
-      const elList = document.body.querySelectorAll(selector);
-      [...elList].forEach((el, index, array) => {
-        let start = obj["time"].start;
-        let duration = obj["time"].duration;
-        const elRate = index / (array.length - 1);
-        if (typeof start == "string") {
-          start = splitEl(start, elRate, (val) => {
-            return splitRandom(val, (val) => {
-              return parseFloat(val);
-            });
-          });
-        }
-        if (typeof duration == "string") {
-          duration = splitEl(duration, elRate, (val) => {
-            return splitRandom(val, (val) => {
-              return parseFloat(val);
-            });
-          });
-        }
-
-        for (let styleKey in obj) {
-          if (styleKey != "time") {
-            let unit;
-            let vals = obj[styleKey].val;
-            if (typeof vals == "string") {
-              const data = vals.split(/\_/g);
-              vals = splitTime(data[0], (val) => {
-                return splitGroup(val, (val) => {
-                  return splitEl(val, elRate, (val) => {
-                    return splitRandom(val, (val) => {
-                      return parseFloat(val);
-                    });
-                  });
-                });
-              });
-              unit = data[1] || unit;
-            } else if (typeof vals == "number") {
-              vals = [vals];
-            }
-            temp[key].push({
-              el: el,
-              style: styleKey,
-              start: start,
-              duration: duration,
-              num: {
-                val: vals,
-                calc: obj[styleKey].calc,
-                rule: obj[styleKey].rule,
-                unit: unit,
-              },
-            });
-          }
-        }
-      });
+const listData = [];
+list.forEach((obj) => {
+  const elList = document.body.querySelectorAll(obj.selector);
+  [...elList].forEach((el, index, array) => {
+    const elRate = index / (array.length - 1);
+    let time = timeDecomposition(obj["time"], elRate);
+    let timeProportion = timeDecomposition(obj["timeProportion"], elRate);
+    if (timeProportion) {
+      time.start = rangeValue(time.start, timeProportion.start, timeProportion.end);
+      time.end = rangeValue(time.end, timeProportion.start, timeProportion.end);
     }
-  }
-  return temp;
+
+    const item = {
+      el: el,
+      start: time.start,
+      end: time.end,
+      style: [],
+    };
+    //const style = [];
+    for (let styleKey in obj) {
+      if (styleKey != "selector" && styleKey != "time" && styleKey != "timeProportion") {
+        let unit;
+        let vals = obj[styleKey];
+        let falseVals;
+        let switchBool = false;
+        if (typeof vals == "object") {
+          vals = vals.val;
+        }
+        if (vals != undefined) {
+          if (typeof vals == "string") {
+            const data = vals.split(/\_/g);
+            vals = data[0];
+            unit = data[1] || unit;
+            switchBool = /\&/g.test(vals);
+
+            if (switchBool) {
+              vals = vals.split(/\&/g);
+              falseVals = splitStyle(vals[1], elRate);
+              vals = splitStyle(vals[0], elRate);
+            } else {
+              vals = splitStyle(vals, elRate);
+            }
+          } else if (typeof vals == "number") {
+            vals = [vals];
+          }
+          item.style.push({
+            name: styleKey,
+            val: vals,
+            calc: obj[styleKey].calc,
+            rule: obj[styleKey].rule,
+            unit: unit,
+            falseVal: falseVals,
+          });
+        }
+      }
+    }
+    listData.push(item);
+  });
 }); //資料轉換
-//console.log(listData);
-//0.1~0.3 時間接續漸變 0~1秒變化對應0.1~0.3
+const listDataBool = listData.map(() => false);
+console.log(listData, listDataBool);
+//time 可使用符號 | -> _ ~ 切割順序 (~ _) -> |
+//----------------------
+//0.1|0.3 間隔亂數 0.1到0.3之間亂數
+//0.1->0.3 元件接續變化 假設3個元件 分配到0.1秒 0.2秒 0.3秒
+//0.1_0.3 時間範圍 開始0.1秒 持續0.3秒
+//0.1~0.3 時間範圍 開始0.1秒 結束0.3秒
+
+//style 可使用符號 & ~ , -> | 切割順序 & ~ , -> |
+//----------------------
+//123&456 範圍開關 在進入時間範圍時 顯示123 反之456
+//0.1~0.3 時間接續漸變 假設時間0~1秒變化對應0.1~0.3
+//10,5 分組 ${0} = 10 ${1} = 5
+//0.1->0.3 元件接續變化 假設3個元件 分配到0.1 0.2 0.3
 //0.1|0.3 間隔亂數
-//10,10 分組
-//0.1->0.3 元素接續變化
 
-//time 可使用符號 | ->
-//style 可使用符號 ~ , |
-
-//切割順序 ~ , -> |
-//範本
-//顏色變化 255,255,255~0,0,0
-//位置變化 0,0~100,100
-//位置設置 0,0->100,100
-//亂數參數 0.0|1.0
-//0|255,255~4,0|255
-//0->5 設定元素分別假設有六個元素 每個分配到數值 0 1 2 3 4 5
-//0->5~10->15 設定元素分別假設有六個元素 每個分配到數值 0~10 1~11 2~12 3~13 4~14 5~15
+//style未加入 0.5:10 占比
+//style未加入 0.0:0~0.2:50~1.0:100 占比分配
 
 /*let a = [];
 "translate(${0.3~0.8}%, ${1}%)".replace(/\$\{[\d|\.|\w|\~]+\}/g, (val) => {
@@ -273,67 +317,32 @@ let b = "translate(${0.3~0.8}%, ${1}%)".match(/\$\{[\d|\.|\w|\~]+\}/g);
 console.log(a, b);*/
 
 const init = () => {
-  const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
-  const sectionScrollData = getSectionScrollData(sectionList, scrollTop);
-  cRate = sectionScrollData.rate;
-  cType = sectionScrollData.type;
-  cIndex = sectionScrollData.index;
-  for (let i = 0; i < cIndex + 1; i++) {
-    if (i < cIndex) {
-      sectionStyleEaseStep(listData[i]["start"], 1);
-      sectionStyleEaseStep(listData[i]["process"], 1);
-      sectionStyleEaseStep(listData[i]["end"], 1);
-    } else {
-      sectionStyleEaseStep(listData[i]["start"], 1);
-      if (cType == "ease") {
-        sectionStyleEaseStep(listData[i]["process"], 1);
-      }
-    }
-  }
-  //將所有元素設定好
+  //將所有元件設定好
 };
+
 const scroll = () => {
   const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
-  let sectionScrollData = getSectionScrollData(sectionList, scrollTop);
-  cRate = sectionScrollData.rate;
-  if (cType != sectionScrollData.type || cIndex != sectionScrollData.index) {
-    if (cType == "run") {
-      if (cIndex == sectionScrollData.index) {
-        sectionStyleEaseStep(listData[cIndex]["process"], 1);
+  //let sectionScrollData = getSectionScrollData(sectionList, scrollTop);
+  cRate = scrollTop / window.innerHeight;
+  console.log(cRate);
+  listData.forEach((obj, index) => {
+    if (!listDataBool[index]) {
+      if (cRate < obj.start) {
+        listDataBool[index] = true;
+        styleEaseStep(obj.el, obj.style, 0, false);
+      } else if (cRate > obj.end) {
+        listDataBool[index] = true;
+        styleEaseStep(obj.el, obj.style, 1, false);
       } else {
-        sectionStyleEaseStep(listData[cIndex]["process"], 0);
+        const rate0 = obj.end - obj.start <= 0 ? 0 : mapVal(cRate, obj.start, obj.end);
+        styleEaseStep(obj.el, obj.style, rate0, true);
       }
-    } else if (cType == "ease") {
-      if (cIndex == sectionScrollData.index) {
-        sectionStyleEaseStep(listData[cIndex]["end"], 0);
-        if (cIndex + 1 < list.length) {
-          sectionStyleEaseStep(listData[cIndex + 1]["start"], 0);
-        }
-      } else {
-        sectionStyleEaseStep(listData[cIndex]["end"], 1);
-        if (cIndex + 1 < list.length) {
-          sectionStyleEaseStep(listData[cIndex + 1]["start"], 1);
-        }
-      }
-    }
-    cType = sectionScrollData.type;
-    cIndex = sectionScrollData.index;
-  } //切換狀態與頁面時 把元素歸位準確
-  for (let i = 0; i < sectionList.length; i++) {
-    if (i >= cIndex && i <= cIndex + 1) {
-      sectionList[i].style.visibility = "";
     } else {
-      sectionList[i].style.visibility = "hidden";
+      if (cRate >= obj.start && cRate <= obj.end) {
+        listDataBool[index] = false;
+      }
     }
-  } //隱藏頁面
-  if (cType == "run") {
-    sectionStyleEaseStep(listData[cIndex]["process"], cRate);
-  } else if (cType == "ease") {
-    sectionStyleEaseStep(listData[cIndex]["end"], cRate);
-    if (cIndex + 1 < list.length) {
-      sectionStyleEaseStep(listData[cIndex + 1]["start"], cRate);
-    }
-  } //執行效果
+  });
 };
 window.addEventListener("scroll", scroll);
 init();

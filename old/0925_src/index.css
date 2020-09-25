@@ -5,10 +5,10 @@ body {
   min-width: 768px;
 }
 .wrap {
-  position: absolute;
+  position: relative;
   display: block;
   width: 100%;
-  height: 1200vh;
+  /* overflow: hidden; */
 }
 .nav_sticky {
   position: sticky;
@@ -21,10 +21,9 @@ body {
   display: none;
 }
 .section {
-  position: absolute;
+  position: relative;
   display: block;
   width: 100%;
-  left: 0px;
 }
 .sticky {
   position: sticky;
@@ -39,21 +38,18 @@ body {
 #section01 {
   height: 500vh;
   font-family: "Noto Sans TC";
-  top: 0vh;
 }
 #section02 {
   height: 400vh;
-  /*margin-bottom: -100vh;*/
-  top: 500vh;
+  margin-bottom: -100vh;
 }
 #section03 {
   height: 400vh;
-  /* margin-bottom: -100vh; */
-  top: 800vh;
+  margin-bottom: -100vh;
 }
 #section04 {
   height: 500vh;
-  /* margin-bottom: -100vh; */
+  margin-bottom: -100vh;
 }
 #section05 {
   height: 100vh;
@@ -211,3 +207,12 @@ body {
   background-repeat: no-repeat;
   /* -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%); */
 }
+/*.asdasd {
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  height: 3000vh;
+  background-color: darkred;
+}*/
