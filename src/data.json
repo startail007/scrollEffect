@@ -152,8 +152,49 @@
     "time": "0_1",
     "backgroundPosition": {
       "val": "0~2",
-      "calc": "20 * Math.sin(${0} * 2 * Math.PI)",
-      "rule": "${0}px 0px"
+      "rule": "$f{wave(${0})}px 0px"
     }
+  },
+  {
+    "selector": "#section03_bg",
+    "timeProportion": "7~8",
+    "time": "0_1",
+    "opacity": "0~1"
+  },
+  {
+    "selector": "#section04",
+    "timeProportion": "10~16",
+    "time": "0~1",
+    "display": "&none"
+  },
+  {
+    "selector": "#section04_bg",
+    "timeProportion": "11~14",
+    "time": "0~1",
+    "backgroundColor": {
+      "val": "0,73,47~120,100,20~212,73,29",
+      "rule": "hsl(${0}, ${1}%, ${2}%)"
+    }
+  },
+  {
+    "selector": "#section04_path01",
+    "timeProportion": "11~12",
+    "time": "0~1",
+    "stroke-dasharray": "$f{getTotalLength()}",
+    "stroke-dashoffset": "$f{getTotalLength()}~0"
+  },
+  {
+    "selector": "#section04_path02",
+    "timeProportion": "12~13",
+    "time": "0~1",
+    "stroke-dasharray": "$f{getTotalLength()}",
+    "stroke-dashoffset": "$f{getTotalLength()}~0"
+  },
+  {
+    "selector": "#section04_path03",
+    "timeProportion": "13~14",
+    "time": "0~1",
+    "stroke-dasharray": "$f{getTotalLength()}",
+    "stroke-dashoffset": "$f{getTotalLength()}~0"
   }
 ]

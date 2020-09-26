@@ -67,16 +67,22 @@ const lagrangeInterpolation = (data, x) => {
   }
 }; //內插法
 
-const easeStep = (vals, calc, rule, unit = "", rate) => {
+const easeStep = (el, vals, rule, unit = "", rate) => {
   if (typeof vals == "object") {
     if (typeof vals[0] == "string") {
       return vals;
     } else if (typeof vals[0] == "number") {
       let val = lagrangeInterpolation(vals, rate);
-      if (calc) {
-        val = eval(calc.replace(/\$\{\d\}/g, val));
+      if (rule) {
+        val = runFunction(
+          indexReplace(rule, () => {
+            return val + unit;
+          }),
+          el,
+          listDataFun
+        );
       }
-      return (rule ? rule.replace(/\$\{\d\}/g, val) : val) + unit;
+      return val + unit;
     } else if (typeof vals[0] == "object") {
       if (vals[0] instanceof Array) {
         if (rule) {
@@ -93,21 +99,15 @@ const easeStep = (vals, calc, rule, unit = "", rate) => {
             }
           }
 
-          const valList0 = [];
-          for (let i = 0; i < vals[0].length; i++) {
-            if (calc && calc[i]) {
-              valList0[i] = eval(
-                calc[i].replace(/\$\{\d\}/g, (val) => {
-                  return valList[val.replace(/[\$\{\}]/g, "")];
-                })
-              );
-            } else {
-              valList0[i] = valList[i];
-            }
-          }
-          return rule.replace(/\$\{\d\}/g, (val) => {
-            return valList0[val.replace(/[\$\{\}]/g, "")] + unit;
-          });
+          const val = runFunction(
+            indexReplace(rule, (val) => {
+              return valList[val.replace(/[\$\{\}]/g, "")];
+            }),
+            el,
+            listDataFun
+          );
+
+          return val + unit;
         }
       }
     }
@@ -116,8 +116,8 @@ const easeStep = (vals, calc, rule, unit = "", rate) => {
 const styleEaseStep = (el, styleList, rate, rangeBool) => {
   styleList.forEach((item) => {
     el.style[item.name] = easeStep(
+      el,
       item.falseVal && !rangeBool ? item.falseVal : item.val,
-      item.calc,
       item.rule,
       item.unit,
       rate
@@ -161,15 +161,42 @@ const splitTime = (val, changeNum) => {
     return changeNum ? changeNum(val_0) : val_0;
   });
 };
-// const splitSwitch = (val, changeNum) => {
-//   if (/\&/g.test(val)) {
-//     return val.split(/\&/g).map((val_0) => {
-//       return changeNum ? changeNum(val_0, true) : val_0;
-//     });
-//   } else {
-//     return changeNum ? changeNum(val, false) : val;
-//   }
-// };
+const indexReplace = (val, changeNum) => {
+  return val.replace(/\$\{\d\}/g, (val) => {
+    return changeNum ? changeNum(val) : val;
+  });
+};
+const runFunction = (val, el, funs) => {
+  if (/\$f/g.test(val)) {
+    let vals = val.split(/\$f/g);
+    vals = vals.filter((val) => val !== "").map((val) => "$f" + val);
+
+    return vals
+      .map((val) => {
+        return val.replace(/\$f\{.*\}/g, (ss) => {
+          const s = ss.replace(/^\$f\{(.*)\}$/g, "$1");
+          const s0 = s.replace(/^(.+)\(.*\)$/g, "$1");
+
+          if (funs[s0]) {
+            let s1_data = [];
+            if (/^.+\((.+)\)$/g.test(s)) {
+              s1_data = s
+                .replace(/^.+\((.+)\)$/g, "$1")
+                .split(/\,/g)
+                .map(eval);
+            }
+            return funs[s0].apply(this, [el, ...s1_data]);
+          } else {
+            return ss;
+          }
+        });
+      })
+      .join("");
+  } else {
+    return val;
+  }
+};
+
 const splitStyle = (val, rate) => {
   return splitTime(val, (val) => {
     return splitGroup(val, (val) => {
@@ -227,7 +254,14 @@ const timeDecomposition = (time, rate) => {
 };
 
 import list from "./data";
-
+const listDataFun = {
+  getTotalLength: (el) => {
+    return el.getTotalLength();
+  },
+  wave: (el, val) => {
+    return 20 * Math.sin(val * 2 * Math.PI);
+  },
+};
 let cRate = 0;
 const listData = [];
 list.forEach((obj) => {
@@ -266,9 +300,14 @@ list.forEach((obj) => {
 
             if (switchBool) {
               vals = vals.split(/\&/g);
+
+              vals[1] = runFunction(vals[1], el, listDataFun);
               falseVals = splitStyle(vals[1], elRate);
+
+              vals[0] = runFunction(vals[0], el, listDataFun);
               vals = splitStyle(vals[0], elRate);
             } else {
+              vals = runFunction(vals, el, listDataFun);
               vals = splitStyle(vals, elRate);
             }
           } else if (typeof vals == "number") {
@@ -277,7 +316,6 @@ list.forEach((obj) => {
           item.style.push({
             name: styleKey,
             val: vals,
-            calc: obj[styleKey].calc,
             rule: obj[styleKey].rule,
             unit: unit,
             falseVal: falseVals,
@@ -305,24 +343,18 @@ console.log(listData, listDataBool);
 //0.1->0.3 元件接續變化 假設3個元件 分配到0.1 0.2 0.3
 //0.1|0.3 間隔亂數
 
+//style 屬性 val rule 可用符號
+//$f{XXX(0.5,0.75)}
+
 //style未加入 0.5:10 占比
 //style未加入 0.0:0~0.2:50~1.0:100 占比分配
 
-/*let a = [];
-"translate(${0.3~0.8}%, ${1}%)".replace(/\$\{[\d|\.|\w|\~]+\}/g, (val) => {
-  a.push(val);
-});*/
-/*let a = "translate(${0.3~0.8}%, ${1}%)".split(/\$\{[\d|\.|\w|\~]+\}/g);
-let b = "translate(${0.3~0.8}%, ${1}%)".match(/\$\{[\d|\.|\w|\~]+\}/g);
-console.log(a, b);*/
-
 const init = () => {
-  //將所有元件設定好
+  scroll();
 };
 
 const scroll = () => {
   const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
-  //let sectionScrollData = getSectionScrollData(sectionList, scrollTop);
   cRate = scrollTop / window.innerHeight;
   console.log(cRate);
   listData.forEach((obj, index) => {
@@ -346,4 +378,3 @@ const scroll = () => {
 };
 window.addEventListener("scroll", scroll);
 init();
-scroll();

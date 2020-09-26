@@ -3,12 +3,13 @@
 body {
   margin: 0;
   min-width: 768px;
+  overflow: hidden auto;
 }
 .wrap {
   position: absolute;
   display: block;
   width: 100%;
-  height: 1200vh;
+  height: 1600vh;
 }
 .nav_sticky {
   position: sticky;
@@ -34,7 +35,7 @@ body {
   /*background-color: rgb(194, 30, 223);*/
   top: 0px;
   /*padding-top: 60px;*/
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 #section01 {
   height: 500vh;
@@ -49,11 +50,12 @@ body {
 #section03 {
   height: 400vh;
   /* margin-bottom: -100vh; */
-  top: 800vh;
+  top: 700vh;
 }
 #section04 {
   height: 500vh;
   /* margin-bottom: -100vh; */
+  top: 1100vh;
 }
 #section05 {
   height: 100vh;
