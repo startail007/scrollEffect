@@ -22,8 +22,8 @@
         </filter>
       </defs>
     </svg>
-    <div class="nav_sticky"></div>
     <div class="wrap">
+      <div class="nav_sticky"></div>
       <div class="section" id="section01">
         <div class="sticky">
           <div id="section01_bg"></div>
@@ -60,15 +60,52 @@
       <div class="section" id="section03">
         <div class="sticky">
           <div id="section03_bg"></div>
-          <div class="content"></div>
+          <div class="content">
+            <div id="section03_wave01">
+              <svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="70px">
+                <defs>
+                  <pattern
+                    id="star01"
+                    patternUnits="userSpaceOnUse"
+                    width="200"
+                    height="100"
+                    viewBox="0,0,408,204"
+                    patternTransform="translate(0,60)"
+                  >
+                    <rect width="408" height="204" fill="rgb(20, 70, 128)" x="0" y="0"></rect>
+                    <image xlink:href="./section03_bg.png" />
+                  </pattern>
+                </defs>
+                <path id="section03_path01" fill="url(#star01)" />
+              </svg>
+            </div>
+            <div id="section03_wave02">
+              <svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100vh">
+                <defs>
+                  <pattern id="star02" patternUnits="userSpaceOnUse" width="200" height="100" viewBox="0,0,408,204">
+                    <rect width="408" height="204" fill="rgb(20, 70, 128)" x="0" y="0"></rect>
+                    <image xlink:href="./section03_bg.png" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" x="0" y="0" fill="url(#star02)"></rect>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
       <div class="section" id="section04">
         <div class="sticky">
           <div id="section04_bg"></div>
           <div class="content">
-            <div>
-              <svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="700" height="200">
+            <div id="section04_text01">
+              <svg
+                class="svg"
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                width="460"
+                height="200"
+                viewBox="0,0,460,200"
+              >
                 <path
                   class="section04_path"
                   id="section04_path01"

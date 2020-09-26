@@ -113,17 +113,24 @@ const easeStep = (el, vals, rule, unit = "", rate) => {
     }
   }
 };
-const styleEaseStep = (el, styleList, rate, rangeBool) => {
-  styleList.forEach((item) => {
-    el.style[item.name] = easeStep(
-      el,
-      item.falseVal && !rangeBool ? item.falseVal : item.val,
-      item.rule,
-      item.unit,
-      rate
-    );
+const dataEaseStep = (el, dataList, rate, rangeBool) => {
+  dataList.forEach((item) => {
+    const data = easeStep(el, item.falseVal && !rangeBool ? item.falseVal : item.val, item.rule, item.unit, rate);
+    if (item.attr) {
+      el.setAttribute(item.name, data);
+    } else {
+      el.style[item.name] = data;
+    }
   });
 };
+/*const attrEaseStep = (el, attrList, rate, rangeBool) => {
+  attrList.forEach((item) => {
+    el.setAttribute(
+      item.name,
+      easeStep(el, item.falseVal && !rangeBool ? item.falseVal : item.val, item.rule, item.unit, rate)
+    );
+  });
+};*/
 
 const splitRandom = (val, changeNum) => {
   if (/\|/g.test(val)) {
@@ -261,6 +268,24 @@ const listDataFun = {
   wave: (el, val) => {
     return 20 * Math.sin(val * 2 * Math.PI);
   },
+  wave01: (el, val) => {
+    //console.log(el, val);
+    const w = window.innerWidth;
+    const h = 70;
+    let s = "";
+    const n = 20;
+    const r = 30 * lagrangeInterpolation([0.5, 0.75, 0.9, 1, 0], val);
+    //const r = 30;
+    const m = w / 800;
+    for (let i = 0; i <= n; i++) {
+      const rate = i / n;
+      const angle = (6 * val + m * rate) * 2 * Math.PI;
+      const x = r * Math.cos(angle);
+      const y = r * Math.sin(angle);
+      s += ` L ${lagrangeInterpolation([-r, w + r], rate) + x} ${r + y}`;
+    }
+    return `M ${w} ${h} L 0 ${h}` + s;
+  },
 };
 let cRate = 0;
 const listData = [];
@@ -279,7 +304,7 @@ list.forEach((obj) => {
       el: el,
       start: time.start,
       end: time.end,
-      style: [],
+      data: [],
     };
     //const style = [];
     for (let styleKey in obj) {
@@ -288,6 +313,7 @@ list.forEach((obj) => {
         let vals = obj[styleKey];
         let falseVals;
         let switchBool = false;
+
         if (typeof vals == "object") {
           vals = vals.val;
         }
@@ -313,12 +339,14 @@ list.forEach((obj) => {
           } else if (typeof vals == "number") {
             vals = [vals];
           }
-          item.style.push({
-            name: styleKey,
+          const attr = /^attr\_/g.test(styleKey);
+          item.data.push({
+            name: attr ? styleKey.replace(/^attr\_/g, "") : styleKey,
             val: vals,
             rule: obj[styleKey].rule,
             unit: unit,
             falseVal: falseVals,
+            attr: attr,
           });
         }
       }
@@ -361,13 +389,16 @@ const scroll = () => {
     if (!listDataBool[index]) {
       if (cRate < obj.start) {
         listDataBool[index] = true;
-        styleEaseStep(obj.el, obj.style, 0, false);
+        dataEaseStep(obj.el, obj.data, 0, false);
+        //attrEaseStep(obj.el, obj.attr, 0, false);
       } else if (cRate > obj.end) {
         listDataBool[index] = true;
-        styleEaseStep(obj.el, obj.style, 1, false);
+        dataEaseStep(obj.el, obj.data, 1, false);
+        //attrEaseStep(obj.el, obj.attr, 1, false);
       } else {
         const rate0 = obj.end - obj.start <= 0 ? 0 : mapVal(cRate, obj.start, obj.end);
-        styleEaseStep(obj.el, obj.style, rate0, true);
+        dataEaseStep(obj.el, obj.data, rate0, true);
+        //styleEaseStep(obj.el, obj.attr, rate0, true);
       }
     } else {
       if (cRate >= obj.start && cRate <= obj.end) {

@@ -19,7 +19,8 @@ body {
   background-color: #343a40;
   z-index: 999;
   top: 0px;
-  display: none;
+  backdrop-filter: saturate(180%) blur(5px);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .section {
   position: absolute;
@@ -43,7 +44,7 @@ body {
   top: 0vh;
 }
 #section02 {
-  height: 400vh;
+  height: 500vh;
   /*margin-bottom: -100vh;*/
   top: 500vh;
 }
@@ -166,12 +167,66 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgb(20, 70, 128);
+  /*background-color: rgb(20, 70, 128);
   background-image: url("./section03_bg.png");
-  background-position: center center;
-  background-size: auto 100px;
+  background-position: left top;
+  background-size: auto 100px;*/
   /*filter: url(#f1);*/
 }
+#section03_wave01 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  margin-top: -60px;
+}
+#section03_wave02 {
+  position: absolute;
+  display: block;
+  width: 100%;
+}
+#section03_path01 {
+  /* stroke: darkred; */
+  /* fill: url("./section03_bg.png"); */
+  /* fill: rgb(20, 70, 128); */
+  /*background-image: url("./section03_bg.png");
+  background-position: center center;
+  background-size: auto 100px;*/
+}
+/*#section03_wave {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 50px;
+  top: 0%;
+}
+#section03_wave_bg {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background-color: hsl(20, 100%, 50%);
+}
+#section03_wave01 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("./wave01.svg");
+  background-position: 0% top;
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+}
+#section03_wave02 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("./wave02.svg");
+  background-position: 0% top;
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  bottom: 0%;
+}*/
 #section04_bg {
   position: absolute;
   display: block;
@@ -189,6 +244,13 @@ body {
   stroke-linejoin: round;
   /* stroke: url(#stroke); */
   /* filter: url(#f3); */
+}
+#section04_text01 {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #section05_bg {
