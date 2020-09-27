@@ -9,7 +9,7 @@ body {
   position: absolute;
   display: block;
   width: 100%;
-  height: 1700vh;
+  height: 1800vh;
 }
 .nav_sticky {
   position: sticky;
@@ -97,17 +97,20 @@ body {
   left: 50%;
   bottom: 10%;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5));
-  animation: section00_arrow01_a 2s infinite;
+  /* filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5)); */
+  animation: section00_arrow01_a 1s infinite;
 }
 @keyframes section00_arrow01_a {
   0% {
+    transform: translate(-50%, -50%);
     filter: drop-shadow(0 0 5px hsla(0, 0%, 100%, 0.5));
   }
   50% {
+    transform: translate(-50%, -100%);
     filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5));
   }
   100% {
+    transform: translate(-50%, -50%);
     filter: drop-shadow(0 0 5px hsla(0, 0%, 100%, 0.5));
   }
 }

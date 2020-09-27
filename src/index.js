@@ -422,9 +422,15 @@ console.log(listData, listDataBool);
 const init = () => {
   scroll();
 };
-
+let m_scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
 const scroll = () => {
   const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
+  if (Math.abs(scrollTop - m_scrollTop) > 300) {
+    for (let i = 0; i < listDataBool.length; i++) {
+      listDataBool[i] = false;
+    }
+  }
+  m_scrollTop = scrollTop;
   cRate = scrollTop / window.innerHeight;
   console.log(cRate);
   listData.forEach((obj, index) => {
@@ -437,13 +443,6 @@ const scroll = () => {
         dataEaseStep(obj.el, obj.data, 1, false);
       } else {
         const rate0 = obj.end - obj.start <= 0 ? 0 : mapVal(cRate, obj.start, obj.end);
-        /*if (
-          obj.el == document.getElementById("section03_bubble01") ||
-          obj.el == document.getElementById("section03_bubble02") ||
-          obj.el == document.getElementById("section03_bubble03")
-        ) {
-          console.log(obj.el, rate0, obj.start, obj.end);
-        }*/
         dataEaseStep(obj.el, obj.data, rate0, true);
       }
     } else {
