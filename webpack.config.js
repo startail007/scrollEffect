@@ -49,6 +49,20 @@ module.exports = {
           "css-loader",
         ],
       },
+      //sass scss
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: "../",
+            },
+          },
+          "css-loader",
+          "sass-loader",
+        ],
+      }, //
       //圖檔載入器
       {
         test: /\.(png|jpg|jpe?g|gif|svg)$/i,

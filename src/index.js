@@ -1,4 +1,4 @@
-import "./index.css";
+import "./index.scss";
 const rangeValue = (val, min, max) => {
   return min + val * (max - min);
 };
@@ -35,6 +35,8 @@ let lagrangeInterpolation = (data, x) => {
   }
   return y;
 };*/
+
+//內插法
 const lagrangeInterpolation = (data, x) => {
   let fun = (data, x) => {
     let y = 0;
@@ -65,7 +67,7 @@ const lagrangeInterpolation = (data, x) => {
       });
     }
   }
-}; //內插法
+};
 
 const easeStep = (el, vals, rule, unit = "", rate) => {
   if (typeof vals == "object" && vals instanceof Array) {
@@ -170,6 +172,7 @@ const indexReplace = (val, changeFun) => {
   });
 };
 const stringReplace = (val, changeFun) => {
+  //先將字串取代為別的
   if (/\'/g.test(val)) {
     const list = val.split(/\'/g);
     const stringList = list.filter((val, index) => index % 2 == 1);
@@ -177,7 +180,6 @@ const stringReplace = (val, changeFun) => {
     return changeFun ? changeFun(val, stringList) : val;
   }
   return changeFun ? changeFun(val, []) : val;
-  //先將字串取代為別的
 };
 const splitFunction = (val, changeFun) => {
   const re_f = /\$f/g;
@@ -232,6 +234,7 @@ const splitStyle = (val, rate) => {
     });
   });
   if (typeof vals[0] == "object" && vals[0] instanceof Array) {
+    //將數組方式改成 各線數據 [255,255,0],[128,128,128] >> [255,128],[255,128],[0,128]
     const valList = [];
     for (let i = 0; i < vals[0].length; i++) {
       valList[i] = [];
@@ -243,30 +246,28 @@ const splitStyle = (val, rate) => {
   } else {
     return [vals];
   }
-  //將數組方式改成 各線數據 [255,255,0],[128,128,128] >> [255,128],[255,128],[0,128]
 };
 const splitStyleFull = (vals, el, listDataFun, elRate) => {
+  //function轉換,切割switch
   const fun = (vals, el, listDataFun, elRate) => {
     let [A, B] = splitSwitch(vals);
     A = splitStyle(runFunction(A, el, listDataFun), elRate);
     if (B) {
       B = splitStyle(runFunction(B, el, listDataFun), elRate);
-      if (B.every((val) => val == undefined)) {
+      /*if (B.every((val) => val == undefined)) {
         B = undefined;
-      }
+      }*/
     }
     return [A, B];
-    //function轉換,切割switch
   };
 
   if (typeof vals == "string") {
-    const data = vals.split(/\?/g);
-    //切割unit
-    if (/\;/g.test(vals)) {
+    const data = vals.split(/\?/g); //切割unit
+    if (/\;/g.test(data[0])) {
       const listA = [];
-      const listB = [];
-      data[0].split(/\;/g).forEach((val) => {
-        let d = fun(val, el, listDataFun, elRate);
+      let listB = [];
+      data[0].split(/\;/g).forEach((val, index) => {
+        const d = fun(val, el, listDataFun, elRate);
         listA.push(...d[0]);
         if (d[1]) {
           listB.push(...d[1]);
@@ -274,9 +275,14 @@ const splitStyleFull = (vals, el, listDataFun, elRate) => {
           listB.push(d[1]);
         }
       });
+      if (listB.every((val) => val == undefined)) {
+        listB = undefined;
+      }
+      //console.log(listA, listB);
       return [listA, listB, data[1]];
     } else {
-      let [A, B] = fun(data[0], el, listDataFun, elRate);
+      const [A, B] = fun(data[0], el, listDataFun, elRate);
+      //console.log(A, B);
       return [A, B, data[1]];
     }
   } else if (typeof vals == "number") {
@@ -314,9 +320,9 @@ const listDataFun = {
     const h = 70;
     let s = "";
     const n = 20;
-    const r = 30 * lagrangeInterpolation([0.5, 0.75, 0.9, 1, 0], val);
+    const r = 30 * lagrangeInterpolation([0.5, 0.7, 0.85, 0.95, 0.4], val);
     //const r = 30;
-    const m = w / (800 - 400 * val);
+    const m = w / (600 + 400 * val);
     for (let i = 0; i <= n; i++) {
       const rate = i / n;
       const angle = (6 * val + m * rate) * 2 * Math.PI;
@@ -341,6 +347,7 @@ const listDataFun = {
 };
 let cRate = 0;
 const listData = [];
+//資料轉換
 list.forEach((obj) => {
   const elList = document.body.querySelectorAll(obj.selector);
   [...elList].forEach((el, index, array) => {
@@ -388,7 +395,7 @@ list.forEach((obj) => {
       listData.push(item);
     }
   });
-}); //資料轉換
+});
 const listDataBool = listData.map(() => false);
 console.log(listData, listDataBool);
 
@@ -405,7 +412,7 @@ const scroll = () => {
   }
   m_scrollTop = scrollTop;
   cRate = scrollTop / window.innerHeight;
-  console.log(cRate);
+  //console.log(cRate);
   listData.forEach((obj, index) => {
     if (!listDataBool[index]) {
       if (cRate < obj.start) {
@@ -425,5 +432,11 @@ const scroll = () => {
     }
   });
 };
+window.addEventListener("resize", () => {
+  for (let i = 0; i < listDataBool.length; i++) {
+    listDataBool[i] = false;
+  }
+  scroll();
+});
 window.addEventListener("scroll", scroll);
 init();
