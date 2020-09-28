@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap");
 body {
   margin: 0;
   min-width: 768px;
@@ -81,7 +83,7 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   white-space: nowrap;
-  font-family: "Noto Sans TC";
+  font-family: "Noto Sans TC", serif;
   letter-spacing: 1rem;
   text-indent: 1rem;
   text-shadow: 0 0 10px hsla(0, 0%, 100%, 0.5);
@@ -143,6 +145,7 @@ body {
   color: #fff;
   font-size: 4rem;
   white-space: nowrap;
+  font-family: "Playfair Display", serif;
 }
 #section01_camera01 {
   position: absolute;
@@ -166,11 +169,8 @@ body {
 #section02_g01 {
   position: absolute;
   display: block;
-  color: #fff;
-  font-size: 4rem;
   left: 50%;
   top: 50%;
-  white-space: nowrap;
   transform: translate(-50%, -50%);
 }
 .section02_g01_texts {
@@ -178,7 +178,12 @@ body {
   display: block;
 }
 .section02_g01_text01 {
+  position: relative;
   display: inline-block;
+  color: #fff;
+  font-size: 4rem;
+  white-space: nowrap;
+  font-family: "Dancing Script", cursive;
 }
 #section02_line01 {
   position: absolute;
@@ -269,11 +274,8 @@ body {
 #section03_g01 {
   position: absolute;
   display: block;
-  color: #fff;
-  font-size: 4rem;
   left: 50%;
   top: 50%;
-  white-space: nowrap;
   transform: translate(-50%, -50%);
 }
 .section03_g01_texts {
@@ -281,7 +283,12 @@ body {
   display: block;
 }
 .section03_g01_text01 {
+  position: relative;
   display: inline-block;
+  color: #fff;
+  font-size: 4rem;
+  white-space: nowrap;
+  font-family: "Libre Baskerville", serif;
 }
 
 #section04_bg {

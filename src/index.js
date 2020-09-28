@@ -427,7 +427,3 @@ const scroll = () => {
 };
 window.addEventListener("scroll", scroll);
 init();
-
-/*let star01 = document.getElementById("star01");
-star01.setAttribute("patternTransform", "translate(0,600)");
-console.log(star01.patternTransform);*/
