@@ -68,47 +68,25 @@ const lagrangeInterpolation = (data, x) => {
 }; //內插法
 
 const easeStep = (el, vals, rule, unit = "", rate) => {
-  if (typeof vals == "object") {
-    if (typeof vals[0] == "string") {
-      return vals;
-    } else if (typeof vals[0] == "number") {
-      let val = lagrangeInterpolation(vals, rate);
-      if (rule) {
-        val = runFunction(
-          indexReplace(rule, () => val),
-          el,
-          listDataFun
-        );
+  if (typeof vals == "object" && vals instanceof Array) {
+    vals = vals.map((val) => {
+      if (val && typeof val[0] == "number") {
+        return lagrangeInterpolation(val, rate);
+      } else {
+        return val;
       }
-      return val + unit;
-    } else if (typeof vals[0] == "object") {
-      if (vals[0] instanceof Array) {
-        if (rule) {
-          const valList = [];
-          for (let i = 0; i < vals[0].length; i++) {
-            const temp = [];
-            for (let j = 0; j < vals.length; j++) {
-              temp.push(vals[j][i]);
-            }
-            if (temp.length > 1) {
-              valList[i] = lagrangeInterpolation(temp, rate);
-            } else if (temp.length >= 0) {
-              valList[i] = temp[0];
-            }
-          }
-
-          const val = runFunction(
-            indexReplace(rule, (val) => {
-              return valList[val.replace(/[\$\{\}]/g, "")];
-            }),
-            el,
-            listDataFun
-          );
-
-          return val + unit;
-        }
-      }
+    });
+    if (!rule) {
+      rule = "${0}";
     }
+    vals = runFunction(
+      indexReplace(rule, (val) => {
+        return vals[val.replace(/[\$\{\}]/g, "")];
+      }),
+      el,
+      listDataFun
+    );
+    return vals + unit;
   }
 };
 const dataEaseStep = (el, dataList, rate, rangeBool) => {
@@ -121,63 +99,52 @@ const dataEaseStep = (el, dataList, rate, rangeBool) => {
     }
   });
 };
-/*const attrEaseStep = (el, attrList, rate, rangeBool) => {
-  attrList.forEach((item) => {
-    el.setAttribute(
-      item.name,
-      easeStep(el, item.falseVal && !rangeBool ? item.falseVal : item.val, item.rule, item.unit, rate)
-    );
-  });
-};*/
 
-const splitRandom = (val, changeNum) => {
+const splitRandom = (val, changeFun) => {
   if (/\|/g.test(val)) {
     const nums = val.split(/\|/g).map((val_0) => {
-      return changeNum ? changeNum(val_0, true) : val_0;
+      return changeFun ? changeFun(val_0, true) : val_0;
     });
     return lagrangeInterpolation(nums, Math.random());
-  } else {
-    return changeNum ? changeNum(val, false) : val;
   }
+  return changeFun ? changeFun(val, false) : val;
 };
 
-const splitEl = (val, rate, changeNum) => {
+const splitEl = (val, rate, changeFun) => {
   if (/\-\>/g.test(val)) {
     const nums = val.split(/\-\>/g).map((val_0) => {
-      return changeNum ? changeNum(val_0, true) : val_0;
+      return changeFun ? changeFun(val_0, true) : val_0;
     });
     return lagrangeInterpolation(nums, rate);
-  } else {
-    return changeNum ? changeNum(val, false) : val;
   }
+  return changeFun ? changeFun(val, false) : val;
 };
 
-const splitGroup = (val, changeNum) => {
+const splitGroup = (val, changeFun) => {
   if (/\,/g.test(val)) {
     return val.split(/\,/g).map((val_0) => {
-      return changeNum ? changeNum(val_0, true) : val_0;
+      return changeFun ? changeFun(val_0, true) : val_0;
     });
-  } else {
-    return changeNum ? changeNum(val, false) : val;
   }
+  return changeFun ? changeFun(val, false) : val;
 };
-const splitTime = (val, changeNum) => {
+const splitTime = (val, changeFun) => {
   const list = [];
   val.replace(/\~|\_/g, (val) => {
     list.push(val == "_");
   });
   let data = val.split(/\~|\_/g).map((val_0) => {
-    return changeNum ? changeNum(val_0) : val_0;
+    return changeFun ? changeFun(val_0) : val_0;
   });
   let temp;
-  return data.map((val, index, array) => {
+  return data.map((val, index) => {
     if (typeof val == "object" && val instanceof Array) {
       if (index != 0 && list[index - 1]) {
         temp = temp.map((val_0, index) => {
           return val_0 + val[index];
         });
       } else {
-        temp = Object.assign([], val);
+        temp = val;
       }
       return temp;
     } else {
@@ -190,54 +157,72 @@ const splitTime = (val, changeNum) => {
     }
   });
 };
+const splitSwitch = (val) => {
+  if (/\!/g.test(val)) {
+    return val.split(/\!/g);
+  }
+  return [val];
+};
 
-const indexReplace = (val, changeNum) => {
-  return val.replace(/\$\{\d\}/g, (val) => {
-    return changeNum ? changeNum(val) : val;
+const indexReplace = (val, changeFun) => {
+  return val.replace(/\$\{\d+\}/g, (val) => {
+    return changeFun ? changeFun(val) : val;
   });
+};
+const stringReplace = (val, changeFun) => {
+  if (/\'/g.test(val)) {
+    const list = val.split(/\'/g);
+    const stringList = list.filter((val, index) => index % 2 == 1);
+    val = list.map((val, index) => (index % 2 == 1 ? "'$s" + Math.floor(index / 2) + "'" : val)).join("");
+    return changeFun ? changeFun(val, stringList) : val;
+  }
+  return changeFun ? changeFun(val, []) : val;
+  //先將字串取代為別的
+};
+const splitFunction = (val, changeFun) => {
+  const re_f = /\$f/g;
+  if (re_f.test(val)) {
+    return val
+      .split(re_f)
+      .filter((val) => val !== "")
+      .map((val) =>
+        val.replace(/^\{(\w+)\((.*)\)\}/g, (val, name, parameter) => {
+          return changeFun ? changeFun(val, name, parameter.split(/\,/g)) : val;
+        })
+      )
+      .join("");
+  }
+  return val;
 };
 const runFunction = (val, el, funs) => {
   const re_f = /\$f/g;
   if (re_f.test(val)) {
-    let s_temp = [];
-    if (/\'/g.test(val)) {
-      const list = val.split(/\'/g);
-      s_temp = list.filter((val, index) => index % 2 == 1);
-      val = list.map((val, index) => (index % 2 == 1 ? "$s" + Math.floor(index / 2) : val)).join("");
-    } //先分割字串
-
-    val = val
-      .split(re_f)
-      .filter((val) => val !== "")
-      .map((val) => {
-        return val.replace(/^\{(\w+)\((.*)\)\}/g, (val, name, parameter) => {
-          const p = parameter.split(/\,/g).map((val) => {
-            if (s_temp.length > 0) {
-              const re_s = /\$f/g;
-              if (re_s.test(val)) {
-                val = "'" + s_temp[val.replace(re_s, "")] + "'";
-              }
-            }
-            try {
-              return eval(val);
-            } catch (error) {
-              return val;
-            }
-          });
-          if (funs[name]) {
-            return funs[name].apply(this, [el, ...p]);
-          } else {
+    return stringReplace(val, (val, stringList) => {
+      return splitFunction(val, (val, name, parameter) => {
+        const p = parameter.map((val) => {
+          const re_s = /\'\$s(\d+)\'/g;
+          if (re_s.test(val)) {
+            return "'" + stringList[val.replace(re_s, "$1")] + "'";
+          }
+          try {
+            return eval(val);
+          } catch (error) {
             return val;
           }
         });
-      })
-      .join("");
+        if (funs[name]) {
+          return funs[name].apply(this, [el, ...p]);
+        } else {
+          return val;
+        }
+      });
+    });
   }
   return val;
 };
 
 const splitStyle = (val, rate) => {
-  return splitTime(val, (val) => {
+  const vals = splitTime(val, (val) => {
     return splitGroup(val, (val) => {
       return splitEl(val, rate, (val) => {
         return splitRandom(val, (val) => {
@@ -246,50 +231,77 @@ const splitStyle = (val, rate) => {
       });
     });
   });
-};
-const numberConversion = (val, changeNum) => {
-  if (/^\-?\d+(.\d*)?$/g.test(val)) {
-    return changeNum ? changeNum(parseFloat(val), true) : parseFloat(val);
-  } else {
-    return changeNum ? changeNum(val, false) : val;
-  }
-};
-
-const timeDecomposition = (time, rate) => {
-  if (time) {
-    let time01 = 0;
-    let time02 = 0;
-    let duration = false;
-    if (typeof time == "string") {
-      if (/\_/g.test(time)) {
-        const timeData = time.split(/\_/g);
-        time01 = timeData[0];
-        time02 = timeData[1];
-        duration = true;
-      } else if (/\~/g.test(time)) {
-        const timeData = time.split(/\~/g);
-        time01 = timeData[0];
-        time02 = timeData[1];
-        duration = false;
+  if (typeof vals[0] == "object" && vals[0] instanceof Array) {
+    const valList = [];
+    for (let i = 0; i < vals[0].length; i++) {
+      valList[i] = [];
+      for (let j = 0; j < vals.length; j++) {
+        valList[i].push(vals[j][i]);
       }
     }
-    if (typeof time01 == "string") {
-      time01 = splitEl(time01, rate, (val) => {
-        return splitRandom(val, (val) => {
-          return parseFloat(val);
-        });
-      });
-    }
-    if (typeof time02 == "string") {
-      time02 = splitEl(time02, rate, (val) => {
-        return splitRandom(val, (val) => {
-          return parseFloat(val);
-        });
-      });
-    }
-    return { start: time01, end: duration ? time01 + time02 : time02 };
+    return valList;
+  } else {
+    return [vals];
   }
-  return time;
+  //將數組方式改成 各線數據 [255,255,0],[128,128,128] >> [255,128],[255,128],[0,128]
+};
+const splitStyleFull = (vals, el, listDataFun, elRate) => {
+  const fun = (vals, el, listDataFun, elRate) => {
+    let [A, B] = splitSwitch(vals);
+    A = splitStyle(runFunction(A, el, listDataFun), elRate);
+    if (B) {
+      B = splitStyle(runFunction(B, el, listDataFun), elRate);
+      if (B.every((val) => val == undefined)) {
+        B = undefined;
+      }
+    }
+    return [A, B];
+    //function轉換,切割switch
+  };
+
+  if (typeof vals == "string") {
+    const data = vals.split(/\?/g);
+    //切割unit
+    if (/\;/g.test(vals)) {
+      const listA = [];
+      const listB = [];
+      data[0].split(/\;/g).forEach((val) => {
+        let d = fun(val, el, listDataFun, elRate);
+        listA.push(...d[0]);
+        if (d[1]) {
+          listB.push(...d[1]);
+        } else {
+          listB.push(d[1]);
+        }
+      });
+      return [listA, listB, data[1]];
+    } else {
+      let [A, B] = fun(data[0], el, listDataFun, elRate);
+      return [A, B, data[1]];
+    }
+  } else if (typeof vals == "number") {
+    return [[[vals]]];
+  }
+};
+const numberConversion = (val, changeFun) => {
+  if (/^\-?\d+(.\d*)?$/g.test(val)) {
+    return changeFun ? changeFun(parseFloat(val), true) : parseFloat(val);
+  } else {
+    return changeFun ? changeFun(val, false) : val;
+  }
+};
+const timeDecomposition = (val, elRate) => {
+  if (val) {
+    const time = splitTime(val, (val) => {
+      return splitEl(val, elRate, (val) => {
+        return splitRandom(val, (val) => {
+          return parseFloat(val);
+        });
+      });
+    });
+    return { start: time[0], end: time[1] };
+  }
+  return val;
 };
 
 import list from "./data";
@@ -319,8 +331,12 @@ const listDataFun = {
     y += 15 * Math.cos(4 * rate * 2 * Math.PI);
     return x + "," + y;
   },
-  bubble: (el, val, rate) => {
-    return val + 1 * Math.sin(2 * rate * 2 * Math.PI);
+  bubble: (el, val, rate, r) => {
+    return val + r * Math.sin(2 * rate * 2 * Math.PI);
+  },
+  wave_text: (el, val, y, s) => {
+    //console.log(s);
+    return 20 * Math.sin(val * 2 * Math.PI) + y;
   },
 };
 let cRate = 0;
@@ -330,10 +346,10 @@ list.forEach((obj) => {
   [...elList].forEach((el, index, array) => {
     const elRate = index / (array.length - 1);
     let time = timeDecomposition(obj.time, elRate);
-    let timeProportion = timeDecomposition(obj.timeProportion, elRate);
-    if (timeProportion) {
-      time.start = rangeValue(time.start, timeProportion.start, timeProportion.end);
-      time.end = rangeValue(time.end, timeProportion.start, timeProportion.end);
+    let timeRange = timeDecomposition(obj.timeRange, elRate);
+    if (timeRange) {
+      time.start = rangeValue(time.start, timeRange.start, timeRange.end);
+      time.end = rangeValue(time.end, timeRange.start, timeRange.end);
     }
     const count = obj.count == undefined ? 1 : obj.count;
     const duration = (time.end - time.start) / count;
@@ -348,45 +364,22 @@ list.forEach((obj) => {
         item.start = time.start + duration * i;
         item.end = time.start + duration * (i + 1);
       }
+      const exclude = ["selector", "time", "timeRange", "count"];
       for (let styleKey in obj) {
-        if (styleKey != "selector" && styleKey != "time" && styleKey != "timeProportion") {
-          let unit;
+        if (!(exclude.indexOf(styleKey) >= 0)) {
           let vals = obj[styleKey];
-          let falseVals;
-          let switchBool = false;
-
           if (typeof vals == "object") {
             vals = vals.val;
           }
           if (vals != undefined) {
-            if (typeof vals == "string") {
-              const data = vals.split(/\?/g);
-              vals = data[0];
-              unit = data[1] || unit;
-              switchBool = /\!/g.test(vals);
-
-              if (switchBool) {
-                vals = vals.split(/\!/g);
-
-                vals[1] = runFunction(vals[1], el, listDataFun);
-                falseVals = splitStyle(vals[1], elRate);
-
-                vals[0] = runFunction(vals[0], el, listDataFun);
-                vals = splitStyle(vals[0], elRate);
-              } else {
-                vals = runFunction(vals, el, listDataFun);
-                vals = splitStyle(vals, elRate);
-              }
-            } else if (typeof vals == "number") {
-              vals = [vals];
-            }
+            const [A, B, unit] = splitStyleFull(vals, el, listDataFun, elRate);
             const attr = /^attr\_/g.test(styleKey);
             item.data.push({
               name: attr ? styleKey.replace(/^attr\_/g, "") : styleKey,
-              val: vals,
+              val: A,
               rule: obj[styleKey].rule,
               unit: unit,
-              falseVal: falseVals,
+              falseVal: B,
               attr: attr,
             });
           }
@@ -398,26 +391,6 @@ list.forEach((obj) => {
 }); //資料轉換
 const listDataBool = listData.map(() => false);
 console.log(listData, listDataBool);
-//time 可使用符號 順序 [~ or _] -> |
-//----------------------
-//0.1|0.3 間隔亂數 0.1到0.3之間亂數
-//0.1->0.3 元件接續變化 假設3個元件 分配到0.1秒 0.2秒 0.3秒
-//0.1_0.3 時間範圍 開始0.1秒 持續0.3秒
-//0.1~0.3 時間範圍 開始0.1秒 結束0.3秒
-
-//style 可使用符號 順序 ? [~ or _] , -> |
-//----------------------
-//123?456 範圍開關 在進入時間範圍時 顯示123 反之456
-//0.1~0.3 時間接續漸變 假設時間0~1秒變化對應0.1~0.3
-//10,5 分組 ${0} = 10 ${1} = 5
-//0.1->0.3 元件接續變化 假設3個元件 分配到0.1 0.2 0.3
-//0.1|0.3 間隔亂數
-
-//style 屬性 val rule 可用符號
-//$f{XXX(0.5,0.75)}
-
-//style未加入 0.5:10 占比
-//style未加入 0.0:0~0.2:50~1.0:100 占比分配
 
 const init = () => {
   scroll();

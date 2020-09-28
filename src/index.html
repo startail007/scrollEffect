@@ -93,25 +93,25 @@
                     <image xlink:href="./section03_bg.png" />
                   </pattern>
                 </defs>
-                <path id="section03_wave_path01" fill="url(#section03_wave01_texture)" />
+                <defs>
+                  <clipPath id="section03_wave_path01_mask">
+                    <path id="section03_wave_path01" />
+                  </clipPath>
+                </defs>
+                <defs>
+                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="0%" y2="100%" spreadMethod="pad">
+                    <stop offset="0%" stop-color="rgb(255, 255, 255)" stop-opacity="0" />
+                    <stop offset="50%" stop-color="rgb(20, 70, 128)" stop-opacity="0.5" />
+                    <stop offset="100%" stop-color="rgb(20, 70, 128)" stop-opacity="1" />
+                  </linearGradient>
+                </defs>
+                <g clip-path="url(#section03_wave_path01_mask)">
+                  <rect x="0" y="0" width="100%" height="70px" fill="url(#section03_wave01_texture)" />
+                  <!-- <rect x="0" y="0" width="100%" height="70px" fill="url(#myGradient)" /> -->
+                </g>
               </svg>
             </div>
             <div id="section03_wave02">
-              <svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100vh">
-                <defs>
-                  <pattern
-                    id="section03_wave02_texture"
-                    patternUnits="userSpaceOnUse"
-                    width="200"
-                    height="100"
-                    viewBox="0,0,408,204"
-                  >
-                    <rect width="408" height="204" fill="rgb(20, 70, 128)" x="0" y="0"></rect>
-                    <image xlink:href="./section03_bg.png" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" x="0" y="0" fill="url(#section03_wave02_texture)"></rect>
-              </svg>
               <div class="section03_bubbles">
                 <div class="section03_bubble01"></div>
                 <div class="section03_bubble01"></div>
