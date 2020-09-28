@@ -2,6 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap");
+html {
+  font-size: 16px;
+}
 body {
   margin: 0;
   min-width: 768px;
@@ -129,8 +132,6 @@ body {
 .section01_g01 {
   position: absolute;
   display: block;
-  color: #fff;
-  font-size: 4rem;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
