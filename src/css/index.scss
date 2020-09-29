@@ -171,13 +171,13 @@ body {
   .section01_g01_texts {
     position: relative;
     display: block;
+    white-space: nowrap;
   }
   .section01_g01_texts_01 {
     position: relative;
     display: inline-block;
     color: #fff;
     font-size: 4rem;
-    white-space: nowrap;
     font-family: "Playfair Display", serif;
   }
   #section01_camera01 {
@@ -211,13 +211,13 @@ body {
   .section02_g01_texts {
     position: relative;
     display: block;
+    white-space: nowrap;
   }
   .section02_g01_text01 {
     position: relative;
     display: inline-block;
     color: #fff;
     font-size: 4rem;
-    white-space: nowrap;
     font-family: "Dancing Script", cursive;
   }
   #section02_g02 {
@@ -328,13 +328,13 @@ body {
   .section03_g01_texts {
     position: relative;
     display: block;
+    white-space: nowrap;
   }
   .section03_g01_text01 {
     position: relative;
     display: inline-block;
     color: #fff;
     font-size: 4rem;
-    white-space: nowrap;
     font-family: "Libre Baskerville", serif;
   }
 }
