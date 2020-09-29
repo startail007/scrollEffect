@@ -54,12 +54,12 @@ body {
   top: 500vh;
 }
 #section03 {
-  height: 500vh;
+  height: 700vh;
   top: 700vh;
 }
 #section04 {
-  height: 600vh;
-  top: 1200vh;
+  height: 700vh;
+  top: 1100vh;
 }
 
 .content {
@@ -103,7 +103,7 @@ body {
     left: 50%;
     bottom: 10%;
     transform: translate(-50%, -50%);
-    /* filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5)); */
+    // filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5));
     animation: section00_arrow01_a 1s infinite;
   }
   @keyframes section00_arrow01_a {
@@ -123,6 +123,34 @@ body {
 }
 
 #section01 {
+  // .section00_path {
+  //   stroke: #332f35;
+  //   fill: none;
+  //   stroke-width: 8;
+  // }
+  .section01_g02 {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  .section01_g02_box {
+    position: absolute;
+    display: block;
+    height: 100%;
+    // background-color: hsl(352, 75%, 42%);
+    background-color: hsl(0, 73%, 47%);
+  }
+  $x: 4;
+  @for $i from 0 to $x {
+    .section01_g02_box:nth-child(#{ $i + 1 }) {
+      left: $i * 100% / $x;
+      width: 100% / $x;
+    }
+  }
+
   #section01_bg {
     position: absolute;
     display: block;
@@ -130,7 +158,7 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background-color: darkred;
+    background-color: hsl(0, 40%, 20%);
   }
 
   .section01_g01 {
@@ -208,8 +236,8 @@ body {
   }
   $x: 10;
   $y: 6;
-  @for $j from 0 through ($y - 1) {
-    @for $i from 0 through ($x - 1) {
+  @for $j from 0 to $y {
+    @for $i from 0 to $x {
       .section02_g02_box01:nth-child(#{ $x * $j + $i + 1 }) {
         left: $i * 100% / $x;
         top: $j * 100% / $y;
@@ -254,7 +282,7 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    /*filter: url(#f1);*/
+    // filter: url(#f1);
   }
   #section03_wave01 {
     position: absolute;
@@ -284,7 +312,7 @@ body {
     height: 30px;
     border-radius: 30px;
     transform: translate(-50%, -50%);
-    background-image: url(./section03_bubble.png);
+    background-image: url(../img/section03_bubble.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -319,22 +347,29 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background-color: #9932cd;
+    background-color: hsl(50, 84%, 51%);
   }
-  .section04_path {
+
+  #section04_g01_path01 {
     fill: none;
-    stroke: #ccc;
-    stroke-width: 8px;
+    stroke: #7f0deb;
+    // stroke: url(#section04_g01_path01_texture);
+    stroke-width: 80px;
     stroke-linecap: round;
     stroke-linejoin: round;
-    /* stroke: url(#stroke); */
-    /* filter: url(#f3); */
   }
-  #section04_text01 {
+  .section04_svg02 {
     position: absolute;
     display: block;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(2);
+  }
+  .section04_svg02_text01 {
+    fill: none;
+    stroke: hsl(189, 76%, 33%);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 }

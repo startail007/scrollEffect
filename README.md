@@ -32,7 +32,7 @@
   </tr>
 </table>
 
-#### style,attr 可使用符號 順序 \$f{name(p0[,p1...pN])} ; ? ! [~ or _] , -> |
+#### style,attr 可使用符號 順序 \$name(p0[,p1...pN]) ; ? ! [~ or _] , -> |
 
 <table>
   <tr>
@@ -41,8 +41,8 @@
     <th>說明</th>
   </tr>
   <tr>
-    <td>$f{name(p0[,p1...pN])}</td>
-    <td>$f{aaa(10,20)}</td>
+    <td>$name(p0[,p1...pN])</td>
+    <td>$aaa(10,20)</td>
     <td>執行方法：aaa(10,20)</td>
   </tr>
   <tr>
@@ -87,7 +87,7 @@
   </tr>
 </table>
 
-#### rule 可使用符號 ${N} \$f{name(p0[,p1...pN])}
+#### rule 可使用符號 ${N} \$name(p0[,p1...pN])
 
 <table>
   <tr>
@@ -101,8 +101,8 @@
     <td>參數：分組的第一個數值</td>
   </tr>
   <tr>
-    <td>$f{name(p0[,p1...pN])}</td>
-    <td>$f{aaa(10,${0})}</td>
+    <td>$name(p0[,p1...pN])</td>
+    <td>$aaa(10,${0})</td>
     <td>執行方法：aaa(10,${0})</td>
   </tr>
 </table>

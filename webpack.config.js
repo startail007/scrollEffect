@@ -21,7 +21,7 @@ module.exports = {
     extensions: [".js", ".json"],
   },
   entry: {
-    main: "./src/index.js",
+    main: "./src/js/index.js",
   },
   output: {
     path: path.resolve(__dirname, "./dist/"),
