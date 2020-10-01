@@ -62,7 +62,7 @@ module.exports = {
           "css-loader",
           "sass-loader",
         ],
-      }, //
+      },
       //圖檔載入器
       {
         test: /\.(png|jpg|jpe?g|gif|svg)$/i,
