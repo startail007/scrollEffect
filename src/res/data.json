@@ -52,10 +52,10 @@
         {
           "selector": "#section01 #g02 .box",
           "timeClip": "0~0.6",
-          "timeRate": "0->0.4_0.6",
+          "timeRate": "0->0.4_0.4->0.6",
           "transform": {
             "val": "0~1",
-            "rule": "translate(0%, 0%) scale(${0})"
+            "rule": "translate(0%, 0%) scaleY(${0})"
           }
         },
         {
@@ -228,17 +228,17 @@
           "display": "!none"
         },
         {
-          "selector": "#section03_wave01",
+          "selector": "#section03 #wave01",
           "timeClip": "-3~-2.8",
           "opacity": "0~1"
         },
         {
-          "selector": "#section03_wave01",
+          "selector": "#section03 #wave01",
           "timeClip": "-2.8~0",
           "top": "100~0?%"
         },
         {
-          "selector": "#section03_wave_path01",
+          "selector": "#section03 #wave01 #wave01_path01",
           "timeClip": "-3~0",
           "attr_d": {
             "val": "0~1",
@@ -246,17 +246,17 @@
           }
         },
         {
-          "selector": "#section03_wave02",
+          "selector": "#section03 #wave02",
           "timeClip": "-2.8~0",
           "top": "100~0?%"
         },
         {
-          "selector": ".section03_bubbles",
+          "selector": "#section03 #wave02 .bubbles",
           "timeClip": "-2.8~3",
           "display": "!none"
         },
         {
-          "selector": ".section03_bubble01",
+          "selector": "#section03 #wave02 .bubble",
           "timeClip": "-2.8~4",
           "timeRate": "0|0.4~0.8|1",
           "count": 3,
@@ -272,7 +272,7 @@
           }
         },
         {
-          "selector": "#section03_wave01_texture",
+          "selector": "#section03 #wave01 #wave01_texture",
           "timeClip": "-2.8~0",
           "attr_patternTransform": {
             "val": "0~1",
@@ -280,12 +280,12 @@
           }
         },
         {
-          "selector": ".section03_g01_texts",
+          "selector": "#section03 #g01 .texts",
           "timeClip": "-1~0",
           "opacity": "0~1"
         },
         {
-          "selector": ".section03_g01_text01",
+          "selector": "#section03 #g01 .text",
           "timeClip": "-1~0",
           "transform": {
             "val": "0->1_1.5;400~0",
@@ -293,11 +293,11 @@
           }
         },
         {
-          "selector": ".section03_g01_text01",
+          "selector": "#section03 #g01 .text",
           "timeClip": "0~2",
           "transform": {
             "val": "1.5->2.5_3",
-            "rule": "translate(0%, $wave_text(${0},0,'aaa')%)"
+            "rule": "translate(0%, $wave_text(${0},0)%)"
           }
         }
       ]
@@ -311,12 +311,12 @@
           "display": "!none"
         },
         {
-          "selector": "#section04_svg01",
+          "selector": "#section04 #svg01",
           "timeClip": "-2~0",
           "display": "!none"
         },
         {
-          "selector": "#section04_g01",
+          "selector": "#section04 #svg01 #g01",
           "timeClip": "-2~0",
           "attr_transform": {
             "val": "0~1",
@@ -324,18 +324,18 @@
           }
         },
         {
-          "selector": "#section04_bg",
+          "selector": "#section04 #bg",
           "timeClip": "0~5",
           "display": "!none"
         },
         {
-          "selector": "#section04_g01_path01",
+          "selector": "#section04 #svg01 #path01",
           "timeClip": "-2~0",
           "stroke-dasharray": "$getTotalLength()",
           "stroke-dashoffset": "$getTotalLength()~0"
         },
         {
-          "selector": "#section04_g01_path01",
+          "selector": "#section04 #svg01 #path01",
           "timeClip": "-2~0",
           "timeRate": "0.2~0.8",
           "stroke": {
@@ -344,12 +344,37 @@
           }
         },
         {
-          "selector": "#section04_svg02",
-          "timeClip": "-1~1.05",
-          "display": "!none"
+          "selector": "#section04 #svg02 .text",
+          "timeClip": "0.5->1.5_1",
+          "stroke-dasharray": "$getTotalLength()",
+          "stroke-dashoffset": "$getTotalLength()~0"
         },
         {
-          "selector": "#section04_g03",
+          "selector": "#section04 #svg02 .text",
+          "timeClip": "2.7~3.2",
+          "fill": {
+            "val": "0~0.7~1",
+            "rule": "hsla(0, 8%, 12%, ${0})"
+          }
+        },
+        {
+          "selector": "#section04_svg02_texture01 #linearGradient_stop01",
+          "timeClip": "1.5~2.5",
+          "attr_stop-color": {
+            "val": "0,100,50~180,100,50~0,8,12",
+            "rule": "hsl(${0}, ${1}%, ${2}%)"
+          }
+        },
+        {
+          "selector": "#section04_svg02_texture01 #linearGradient_stop02",
+          "timeClip": "1.5~2.5",
+          "attr_stop-color": {
+            "val": "180,100,50~360,100,50~0,8,12",
+            "rule": "hsl(${0}, ${1}%, ${2}%)"
+          }
+        },
+        {
+          "selector": "#section04 #svg03 #g01",
           "timeClip": "2~3.8",
           "attr_transform": {
             "val": "0~1",
@@ -358,13 +383,13 @@
           "display": "!none"
         },
         {
-          "selector": ".section04_g03_path01",
+          "selector": "#section04 #svg03 .path",
           "timeClip": "2->2.3_1.5",
           "stroke-dasharray": "$getTotalLength()",
           "stroke-dashoffset": "$getTotalLength()~-$getTotalLength()"
         },
         {
-          "selector": "#section04_svg03_linearGradient_stop01",
+          "selector": "#section04_svg03_texture01 #linearGradient_stop01",
           "timeClip": "2~3.8",
           "timeRate": "0.2~0.8",
           "attr_stop-color": {
@@ -373,41 +398,11 @@
           }
         },
         {
-          "selector": "#section04_svg03_linearGradient_stop02",
+          "selector": "#section04_svg03_texture01 #linearGradient_stop02",
           "timeClip": "2~3.8",
           "timeRate": "0.2~0.8",
           "attr_stop-color": {
             "val": "200,60,30~360,40,30~360,8,12",
-            "rule": "hsl(${0}, ${1}%, ${2}%)"
-          }
-        },
-        {
-          "selector": ".section04_svg02_text01",
-          "timeClip": "0.5->1.5_1",
-          "stroke-dasharray": "$getTotalLength()",
-          "stroke-dashoffset": "$getTotalLength()~0"
-        },
-        {
-          "selector": ".section04_svg02_text01",
-          "timeClip": "2.7~3.2",
-          "fill": {
-            "val": "0~0.7~1",
-            "rule": "hsla(0, 8%, 12%, ${0})"
-          }
-        },
-        {
-          "selector": "#section04_svg02_linearGradient_stop01",
-          "timeClip": "1.5~2.5",
-          "attr_stop-color": {
-            "val": "0,100,50~180,100,50~0,8,12",
-            "rule": "hsl(${0}, ${1}%, ${2}%)"
-          }
-        },
-        {
-          "selector": "#section04_svg02_linearGradient_stop02",
-          "timeClip": "1.5~2.5",
-          "attr_stop-color": {
-            "val": "180,100,50~360,100,50~0,8,12",
             "rule": "hsl(${0}, ${1}%, ${2}%)"
           }
         }

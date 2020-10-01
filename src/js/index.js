@@ -32,8 +32,7 @@ const listDataFun = {
   bubble: (el, val, rate, r) => {
     return val + r * Math.sin(2 * rate * 2 * Math.PI);
   },
-  wave_text: (el, val, y, s) => {
-    //console.log(s);
+  wave_text: (el, val, y) => {
     return 20 * Math.sin(val * 2 * Math.PI) + y;
   },
   transform: function (el, w, h) {

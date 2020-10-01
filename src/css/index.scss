@@ -30,18 +30,24 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   display: none;
 }
-.section {
-  position: absolute;
-  display: block;
-  width: 100%;
-  left: 0px;
-}
 .sticky {
   position: sticky;
   display: block;
   width: 100%;
   height: 100vh;
   top: 0px;
+}
+.section {
+  position: absolute;
+  display: block;
+  width: 100%;
+  left: 0px;
+}
+.content {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 #section00 {
   height: 200vh;
@@ -64,12 +70,6 @@ body {
   top: 1100vh;
 }
 
-.content {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
 #section00 {
   #bg {
     position: absolute;
@@ -149,6 +149,7 @@ body {
       // background-color: hsl(352, 75%, 42%);
       background-color: hsl(0, 73%, 47%);
       border: 1px solid hsl(0, 73%, 47%);
+      transform-origin: center bottom;
     }
     $x: 4;
     @for $i from 0 to $x {
@@ -222,21 +223,23 @@ body {
       position: relative;
       display: block;
       white-space: nowrap;
-    }
-    .text {
-      position: relative;
-      display: inline-block;
-      color: #fff;
-      font-size: 4rem;
-      font-family: "Dancing Script", cursive;
-    }
-    #line01 {
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 2px;
-      bottom: 0px;
-      background-color: #fff;
+
+      .text {
+        position: relative;
+        display: inline-block;
+        color: #fff;
+        font-size: 4rem;
+        font-family: "Dancing Script", cursive;
+      }
+
+      #line01 {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 2px;
+        bottom: 0px;
+        background-color: #fff;
+      }
     }
   }
 
@@ -270,7 +273,7 @@ body {
 }
 
 #section03 {
-  #section03_bg {
+  #bg {
     position: absolute;
     display: block;
     width: 100%;
@@ -279,63 +282,67 @@ body {
     left: 0;
     // filter: url(#f1);
   }
-  #section03_wave01 {
+  #wave01 {
     position: absolute;
     display: block;
     width: 100%;
     margin-top: -60px;
   }
-  #section03_wave02 {
+  #wave02 {
     position: absolute;
     display: block;
     width: 100%;
     height: 100%;
     background-color: rgb(20, 70, 128);
-  }
-  .section03_bubbles {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-  }
-  .section03_bubble01 {
-    position: absolute;
-    display: block;
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    transform: translate(-50%, -50%);
-    background-image: url(../img/section03_bubble.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+
+    .bubbles {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+
+      .bubble {
+        position: absolute;
+        display: block;
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        transform: translate(-50%, -50%);
+        background-image: url(../img/section03_bubble.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
   }
 
-  #section03_g01 {
+  #g01 {
     position: absolute;
     display: block;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-  }
-  .section03_g01_texts {
-    position: relative;
-    display: block;
-    white-space: nowrap;
-  }
-  .section03_g01_text01 {
-    position: relative;
-    display: inline-block;
-    color: #fff;
-    font-size: 4rem;
-    font-family: "Libre Baskerville", serif;
+
+    .texts {
+      position: relative;
+      display: block;
+      white-space: nowrap;
+
+      .text {
+        position: relative;
+        display: inline-block;
+        color: #fff;
+        font-size: 4rem;
+        font-family: "Libre Baskerville", serif;
+      }
+    }
   }
 }
 
 #section04 {
-  #section04_bg {
+  #bg {
     position: absolute;
     display: block;
     width: 100%;
@@ -344,61 +351,55 @@ body {
     left: 0;
     background-color: hsl(50, 84%, 51%);
   }
-
-  #section04_g01_path01 {
-    fill: none;
-    stroke: #7f0deb;
-    // stroke: url(#section04_g01_path01_texture);
-    stroke-width: 80px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  #section04_svg01 {
+  #svg01 {
     position: absolute;
     display: block;
     left: 0;
     top: 0;
     filter: url(#f1);
+
+    #path01 {
+      fill: none;
+      stroke: #7f0deb;
+      // stroke: url(#section04_g01_path01_texture);
+      stroke-width: 80px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
   }
-  #section04_svg02 {
+
+  #svg02 {
     position: absolute;
     display: block;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) scale(2);
+    transform: translate(-50%, -50%) scale(1);
+
+    .text {
+      fill: none;
+      // stroke: hsl(0, 7%, 3%);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke: url(#section04_svg02_texture01);
+    }
   }
-  .section04_svg02_text01 {
-    fill: none;
-    // stroke: hsl(0, 7%, 3%);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke: url(#section04_svg02_text01_color);
-  }
-  #section04_g02_text01 {
-    position: absolute;
-    display: block;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 6rem;
-    color: hsl(0, 8%, 12%);
-    font-family: "Sansita Swashed", cursive;
-  }
-  #section04_svg03 {
+
+  #svg03 {
     position: absolute;
     display: block;
     left: 0;
     top: 0;
     filter: url(#f3);
-  }
-  .section04_g03_path01 {
-    fill: none;
-    // stroke: #ecd97a;
-    // stroke: hsla(0, 8%, 12%, 0.9);
-    stroke: url(#section04_svg03_color);
-    stroke-width: 1px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+
+    .path {
+      fill: none;
+      // stroke: #ecd97a;
+      // stroke: hsla(0, 8%, 12%, 0.9);
+      stroke: url(#section04_svg03_texture01);
+      stroke-width: 1px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
   }
 }
