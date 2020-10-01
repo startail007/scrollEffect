@@ -177,11 +177,9 @@ const splitStyleFull = (vals, el, listDataFun, elRate) => {
       if (listB.every((val) => val == undefined)) {
         listB = undefined;
       }
-      //console.log(listA, listB);
       return [listA, listB, data[1]];
     } else {
       const [A, B] = fun(data[0], el, listDataFun, elRate);
-      //console.log(A, B);
       return [A, B, data[1]];
     }
   } else if (typeof vals == "number") {
@@ -200,13 +198,47 @@ const timeDecomposition = (val, elRate) => {
     const time = splitTime(val, (val) => {
       return splitEl(val, elRate, (val) => {
         return splitRandom(val, (val) => {
-          return parseFloat(val);
+          return numberConversion(val);
         });
       });
     });
     return { start: time[0], end: time[1] };
   }
   return val;
+};
+
+const dataTimeDecrypt = (data, fun, min, max) => {
+  const elList = data.selector ? document.body.querySelectorAll(data.selector) : [undefined];
+  [...elList].forEach((el, index, array) => {
+    const elRate = array.length > 1 ? index / (array.length - 1) : 0;
+    let time;
+    if (data.timeClip) {
+      time = timeDecomposition(data.timeClip, elRate);
+      if (min != undefined) {
+        time.start += min;
+        time.end += min;
+      }
+    } else {
+      time = {
+        start: min,
+        end: max,
+      };
+      console.log(data.selector, time);
+    }
+    if (data.timeRate) {
+      let timeRate = timeDecomposition(data.timeRate, elRate);
+      time.start = rangeValue(timeRate.start, time.start, time.end);
+      time.end = rangeValue(timeRate.end, time.start, time.end);
+    }
+    if (el && fun) {
+      fun(el, time, elRate, data);
+    }
+    if (data.child) {
+      data.child.forEach((el) => {
+        dataTimeDecrypt(el, fun, time.start, time.end);
+      });
+    }
+  });
 };
 class jScroll {
   constructor() {
@@ -216,56 +248,46 @@ class jScroll {
   }
   setData(data, dataFun) {
     const listData = [];
-    data.forEach((obj) => {
-      const elList = document.body.querySelectorAll(obj.selector);
-      [...elList].forEach((el, index, array) => {
-        const elRate = index / (array.length - 1);
-        let time = timeDecomposition(obj.time, elRate);
-        let timeRange = timeDecomposition(obj.timeRange, elRate);
-        if (timeRange) {
-          time.start = rangeValue(time.start, timeRange.start, timeRange.end);
-          time.end = rangeValue(time.end, timeRange.start, timeRange.end);
+    dataTimeDecrypt(data, (el, time, elRate, obj) => {
+      const count = obj.count == undefined ? 1 : obj.count;
+      const duration = (time.end - time.start) / count;
+      for (let i = 0; i < count; i++) {
+        const item = {
+          el: el,
+          start: time.start,
+          end: time.end,
+          data: [],
+        };
+        if (count > 1) {
+          item.start = time.start + duration * i;
+          item.end = time.start + duration * (i + 1);
         }
-        const count = obj.count == undefined ? 1 : obj.count;
-        const duration = (time.end - time.start) / count;
-        for (let i = 0; i < count; i++) {
-          const item = {
-            el: el,
-            start: time.start,
-            end: time.end,
-            data: [],
-          };
-          if (count > 1) {
-            item.start = time.start + duration * i;
-            item.end = time.start + duration * (i + 1);
-          }
-          const exclude = ["selector", "time", "timeRange", "count"];
-          for (let styleKey in obj) {
-            if (!(exclude.indexOf(styleKey) >= 0)) {
-              let vals = obj[styleKey];
-              if (typeof vals == "object") {
-                vals = vals.val;
-              }
-              if (vals != undefined) {
-                const [A, B, unit] = splitStyleFull(vals, el, dataFun, elRate);
-                const attr = /^attr\_/g.test(styleKey);
-                item.data.push({
-                  name: attr ? styleKey.replace(/^attr\_/g, "") : styleKey,
-                  val: A,
-                  rule: obj[styleKey].rule,
-                  unit: unit,
-                  falseVal: B,
-                  attr: attr,
-                });
-              }
+        const exclude = ["selector", "timeClip", "timeRate", "count", "child"];
+        for (let styleKey in obj) {
+          if (!(exclude.indexOf(styleKey) >= 0)) {
+            let vals = obj[styleKey];
+            if (typeof vals == "object") {
+              vals = vals.val;
+            }
+            if (vals != undefined) {
+              const [A, B, unit] = splitStyleFull(vals, el, dataFun, elRate);
+              const attr = /^attr\_/g.test(styleKey);
+              item.data.push({
+                name: attr ? styleKey.replace(/^attr\_/g, "") : styleKey,
+                val: A,
+                rule: obj[styleKey].rule,
+                unit: unit,
+                falseVal: B,
+                attr: attr,
+              });
             }
           }
-          listData.push(item);
         }
-      });
+        listData.push(item);
+      }
     });
     this.data = listData;
-    //console.log(listData);
+    console.log(listData);
     this.dataStatus = new Array(listData.length).fill(1);
     this.dataFun = dataFun;
   }
