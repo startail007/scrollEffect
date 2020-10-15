@@ -331,7 +331,10 @@
         {
           "selector": "#section04 #svg01 #path01",
           "timeClip": "-2~0",
-          "stroke-dasharray": "$getTotalLength()",
+          "stroke-dasharray": {
+            "val":"$getTotalLength()",
+            "rule": "${0} ${0}"
+          },
           "stroke-dashoffset": "$getTotalLength()~0"
         },
         {
@@ -346,7 +349,10 @@
         {
           "selector": "#section04 #svg02 .text",
           "timeClip": "0.5->1.5_1",
-          "stroke-dasharray": "$getTotalLength()",
+          "stroke-dasharray": {
+            "val":"$getTotalLength()",
+            "rule": "${0} ${0}"
+          },
           "stroke-dashoffset": "$getTotalLength()~0"
         },
         {
@@ -385,8 +391,11 @@
         {
           "selector": "#section04 #svg03 .path",
           "timeClip": "2->2.3_1.5",
-          "stroke-dasharray": "$getTotalLength()",
-          "stroke-dashoffset": "-$getTotalLength()~0"
+          "stroke-dasharray": {
+            "val":"$getTotalLength()",
+            "rule": "${0} ${0}"
+          },
+          "stroke-dashoffset": "$getTotalLength()~-$getTotalLength()"
         },
         {
           "selector": "#section04_svg03_texture01 #linearGradient_stop01",
