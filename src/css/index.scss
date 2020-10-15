@@ -10,7 +10,7 @@ html {
 body {
   margin: 0;
   min-width: 768px;
-  overflow: hidden auto;
+  /*overflow: hidden auto;*/
 }
 .wrap {
   position: absolute;
@@ -36,6 +36,7 @@ body {
   width: 100%;
   height: 100vh;
   top: 0px;
+  overflow: hidden;
 }
 .section {
   position: absolute;
@@ -105,7 +106,6 @@ body {
     left: 50%;
     bottom: 10%;
     transform: translate(-50%, -50%);
-    // filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.5));
     animation: section00_arrow01_a 1s infinite;
   }
   @keyframes section00_arrow01_a {
@@ -280,7 +280,6 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    // filter: url(#f1);
   }
   #wave01 {
     position: absolute;
@@ -356,12 +355,11 @@ body {
     display: block;
     left: 0;
     top: 0;
-    filter: url(#f1);
+    //filter: url(#f1);
 
     #path01 {
       fill: none;
       stroke: #7f0deb;
-      // stroke: url(#section04_g01_path01_texture);
       stroke-width: 80px;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -390,12 +388,10 @@ body {
     display: block;
     left: 0;
     top: 0;
-    filter: url(#f3);
+    //filter: url(#f3);
 
     .path {
       fill: none;
-      // stroke: #ecd97a;
-      // stroke: hsla(0, 8%, 12%, 0.9);
       stroke: url(#section04_svg03_texture01);
       stroke-width: 1px;
       stroke-linecap: round;

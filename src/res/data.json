@@ -6,7 +6,7 @@
       "child": [
         {
           "selector": "#section00",
-          "timeClip": "0~1",
+          "timeClip": "-1~2",
           "display": "!none"
         },
         {
@@ -28,7 +28,7 @@
       "child": [
         {
           "selector": "#section01",
-          "timeClip": "-0.5~4",
+          "timeClip": "-1.5~5",
           "display": "!none"
         },
         {
@@ -108,7 +108,7 @@
       "child": [
         {
           "selector": "#section02",
-          "timeClip": "-1~5",
+          "timeClip": "-2~6",
           "display": "!none"
         },
         {
@@ -224,7 +224,7 @@
       "child": [
         {
           "selector": "#section03",
-          "timeClip": "-3~3",
+          "timeClip": "-4~4",
           "display": "!none"
         },
         {
@@ -307,7 +307,7 @@
       "child": [
         {
           "selector": "#section04",
-          "timeClip": "-2~5",
+          "timeClip": "-3~6",
           "display": "!none"
         },
         {
