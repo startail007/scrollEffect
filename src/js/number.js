@@ -1,11 +1,11 @@
 const rangeValue = (val, min, max) => min + val * (max - min);
 const mapVal = (val, min, max) => (val - min) / (max - min);
-const cropNumber = (val) => {
-  if (val < 0) {
-    return 0;
+const cropNumber = (val, min = 0, max = 1) => {
+  if (val < min) {
+    return min;
   }
-  if (val > 1) {
-    return 1;
+  if (val > max) {
+    return max;
   }
   return val;
 };
@@ -61,4 +61,4 @@ const lagrangeInterpolation = (data, x) => {
     }
   }
 };
-export { rangeValue, mapVal, lagrangeInterpolation };
+export { rangeValue, mapVal, cropNumber, lagrangeInterpolation };

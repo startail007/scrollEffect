@@ -3,6 +3,7 @@ import { lagrangeInterpolation } from "./number";
 import jScroll from "../js/jScroll";
 
 import list from "../res/data";
+import { cropNumber } from "../js/number";
 const listDataFun = {
   getTotalLength: (el) => {
     return el.getTotalLength();
@@ -56,18 +57,14 @@ const init = () => {
 };
 
 const rateEl = document.getElementById("rate");
-//const scrollTarget = document.getElementById("scroll");
-const scrollTarget = document.body;
-//scrollTarget.offsetHeight
-/*const getH = () => {
-  return window.innerHeight;
-};*/
+const wrapEl = document.getElementById("wrap");
+const scrollTarget = document.getElementById("scroll");
+console.log();
 const scroll = () => {
-  //console.log("aaa");
-  //const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
   const target = scrollTarget == document.body ? document.documentElement : scrollTarget;
   const scrollTop = target.scrollTop;
-  const cRate = scrollTop / scrollTarget.offsetHeight;
+  const max = wrapEl.offsetHeight / scrollTarget.offsetHeight - 1;
+  const cRate = cropNumber(scrollTop / scrollTarget.offsetHeight, 0, max);
   rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
   console.log(cRate);
   jScroll01.update(cRate);
