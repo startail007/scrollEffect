@@ -386,7 +386,7 @@
           "selector": "#section04 #svg03 .path",
           "timeClip": "2->2.3_1.5",
           "stroke-dasharray": "$getTotalLength()",
-          "stroke-dashoffset": "$getTotalLength()~$getTotalLength(-1)"
+          "stroke-dashoffset": "-$getTotalLength()~0"
         },
         {
           "selector": "#section04_svg03_texture01 #linearGradient_stop01",
