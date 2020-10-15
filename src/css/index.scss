@@ -405,9 +405,8 @@ body {
   #svg03 {
     position: absolute;
     display: block;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 0;
+    top: 0;
     //filter: url(#f3);
 
     .path {
