@@ -5,8 +5,8 @@ import jScroll from "../js/jScroll";
 import list from "../res/data";
 import { cropNumber } from "../js/number";
 const listDataFun = {
-  getTotalLength: (el) => {
-    return el.getTotalLength();
+  getTotalLength: (el, rate = 1) => {
+    return rate * el.getTotalLength();
   },
   wave: (el, val) => {
     const w = window.innerWidth;
