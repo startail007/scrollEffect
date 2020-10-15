@@ -9,7 +9,7 @@ const listDataFun = {
     return el.getTotalLength();
   },
   wave: (el, val) => {
-    const w = window.innerWidth;
+    const w = scrollTarget.offsetWidth;
     const h = 70;
     let s = "";
     const n = 20;
@@ -38,13 +38,13 @@ const listDataFun = {
   },
   transform: function (el, w, h) {
     let rate = 1;
-    if (window.innerWidth / window.innerHeight > w / h) {
-      rate = window.innerWidth / w;
+    if (scrollTarget.offsetWidth / scrollTarget.offsetHeight > w / h) {
+      rate = scrollTarget.offsetWidth / w;
     } else {
-      rate = window.innerHeight / h;
+      rate = scrollTarget.offsetHeight / h;
     }
-    const x = window.innerWidth * 0.5 - w * rate * 0.5;
-    const y = window.innerHeight * 0.5 - h * rate * 0.5;
+    const x = scrollTarget.offsetWidth * 0.5 - w * rate * 0.5;
+    const y = scrollTarget.offsetHeight * 0.5 - h * rate * 0.5;
     //console.log(rateW, rateH);
     return `translate(${x},${y}) scale(${rate})`;
   },
