@@ -23,7 +23,7 @@
         </filter>
         <filter id="f3">
           <feMorphology operator="dilate" radius="8" in="SourceGraphic" result="dilate" />
-          <feTurbulence type="fractalNoise" baseFrequency="0.06 0.06" numOctaves="40" result="warp" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.06 0.06" numOctaves="4" result="warp" />
           <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="80" in="dilate" in2="warp" />
         </filter>
       </defs>
