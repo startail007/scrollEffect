@@ -56,7 +56,7 @@ const init = () => {
   scroll();
 };
 
-const rateEl = document.getElementById("rate");
+//const rateEl = document.getElementById("rate");
 const wrapEl = document.getElementById("wrap");
 const scrollTarget = document.getElementById("scroll");
 console.log();
@@ -65,7 +65,7 @@ const scroll = () => {
   const scrollTop = target.scrollTop;
   const max = wrapEl.offsetHeight / scrollTarget.offsetHeight - 1;
   const cRate = cropNumber(scrollTop / scrollTarget.offsetHeight, 0, max);
-  rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
+  //rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
   console.log(cRate);
   jScroll01.update(cRate);
 };
