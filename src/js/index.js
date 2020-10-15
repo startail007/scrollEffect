@@ -62,8 +62,8 @@ const scroll = () => {
   //const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
   const target = scrollTarget == document.body ? document.documentElement : scrollTarget;
   const scrollTop = target.scrollTop;
-  const cRate = scrollTop / window.innerHeight;
-  rateEl.textContent = cRate;
+  const cRate = scrollTop / scrollTarget.offsetHeight;
+  rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
   console.log(cRate);
   jScroll01.update(cRate);
 };
