@@ -54,16 +54,21 @@ jScroll01.setData(list, listDataFun);
 const init = () => {
   scroll();
 };
-//const scrollTarget = document.body;
+
 const rateEl = document.getElementById("rate");
-const scrollTarget = document.getElementById("scroll");
+//const scrollTarget = document.getElementById("scroll");
+const scrollTarget = document.body;
+//scrollTarget.offsetHeight
+const getH = () => {
+  return window.innerHeight;
+};
 const scroll = () => {
   //console.log("aaa");
   //const scrollTop = document.doctype ? document.documentElement.scrollTop : document.body.scrollTop;
   const target = scrollTarget == document.body ? document.documentElement : scrollTarget;
   const scrollTop = target.scrollTop;
-  const cRate = scrollTop / scrollTarget.offsetHeight;
-  rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
+  const cRate = scrollTop / getH();
+  rateEl.textContent = getH() + "-" + cRate;
   console.log(cRate);
   jScroll01.update(cRate);
 };
