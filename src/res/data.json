@@ -379,15 +379,7 @@
             "rule": "hsl(${0}, ${1}%, ${2}%)"
           }
         },
-        {
-          "selector": "#section04 #svg03 #g01",
-          "timeClip": "2~3.8",
-          "attr_transform": {
-            "val": "0~1",
-            "rule": "$transform(600,400)"
-          },
-          "display": "!none"
-        },
+        
         {
           "selector": "#section04 #svg03 .path",
           "timeClip": "2->2.3_1.5",
