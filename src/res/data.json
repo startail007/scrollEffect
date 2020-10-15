@@ -398,6 +398,16 @@
           "stroke-dashoffset": "$getTotalLength()~-$getTotalLength()"
         },
         {
+          "selector": "#section04 #svg03 .path",
+          "timeClip": "2->2.3_0.5",
+          "opacity":"0~1"
+        },
+        {
+          "selector": "#section04 #svg03 .path",
+          "timeClip": "3->3.3_0.5",
+          "opacity":"1~0"
+        },
+        {
           "selector": "#section04_svg03_texture01 #linearGradient_stop01",
           "timeClip": "2~3.8",
           "timeRate": "0.2~0.8",
