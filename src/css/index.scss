@@ -11,6 +11,25 @@ body {
   margin: 0;
   min-width: 768px;
   /*overflow: hidden auto;*/
+  width: 100%;
+  height: 100vh;
+}
+#scroll {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+#rate {
+  position: fixed;
+  display: block;
+  z-index: 999;
+  left: 10px;
+  top: 10px;
+  pointer-events: none;
+  font-size: 2rem;
+  color: rgb(131, 131, 131);
 }
 .wrap {
   position: absolute;
