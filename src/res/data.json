@@ -6,7 +6,7 @@
       "child": [
         {
           "selector": "#section00",
-          "timeClip": "-1~2",
+          "timeClip": "0~1",
           "display": "!none"
         },
         {
@@ -28,7 +28,7 @@
       "child": [
         {
           "selector": "#section01",
-          "timeClip": "-1.5~5",
+          "timeClip": "-0.5~4",
           "display": "!none"
         },
         {
@@ -108,7 +108,7 @@
       "child": [
         {
           "selector": "#section02",
-          "timeClip": "-2~6",
+          "timeClip": "-1~5",
           "display": "!none"
         },
         {
@@ -224,7 +224,7 @@
       "child": [
         {
           "selector": "#section03",
-          "timeClip": "-4~4",
+          "timeClip": "-3~3",
           "display": "!none"
         },
         {
@@ -307,7 +307,7 @@
       "child": [
         {
           "selector": "#section04",
-          "timeClip": "-3~6",
+          "timeClip": "-2~5",
           "display": "!none"
         },
         {
@@ -325,7 +325,7 @@
         },
         {
           "selector": "#section04 #bg",
-          "timeClip": "0~6",
+          "timeClip": "0~5",
           "display": "!none"
         },
         {
