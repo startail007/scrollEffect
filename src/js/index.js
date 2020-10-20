@@ -63,8 +63,8 @@ console.log();
 const scroll = () => {
   const target = scrollTarget == document.body ? document.documentElement : scrollTarget;
   const scrollTop = target.scrollTop;
-  const max = wrapEl.offsetHeight / scrollTarget.offsetHeight - 1;
-  const cRate = cropNumber(scrollTop / scrollTarget.offsetHeight, 0, max);
+  const max = wrapEl.scrollHeight / target.offsetHeight - 1;
+  const cRate = cropNumber(scrollTop / target.offsetHeight, 0, max);
   //rateEl.textContent = scrollTarget.offsetHeight + "-" + cRate;
   console.log(cRate);
   jScroll01.update(cRate);
